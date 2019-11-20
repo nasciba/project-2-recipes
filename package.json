@@ -4,7 +4,8 @@
   "description": "2nd project - module II",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/nasciba/project-2-recipes/issues"
   },
-  "homepage": "https://github.com/nasciba/project-2-recipes#readme"
+  "homepage": "https://github.com/nasciba/project-2-recipes#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.7",
+    "connect-mongo": "^3.1.2",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "hbs": "^4.0.6",
+    "mongoose": "^5.7.12",
+    "nodemon": "^1.19.4"
+  }
 }
