@@ -1,29 +1,70 @@
 require('dotenv').config();
 
 const session = require("express-session");
+const bcrypt = require('bcrypt');
+const passport = require("passport");
+const LocalStrategy = require('passport-local').Strategy;
 const MongoStore = require("connect-mongo")(session);
 const mongoose = require('mongoose');
 const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
-
+const flash = require("connect-flash");
 const hbs = require('hbs');
-const port =  process.env.PORT;
+const port = process.env.PORT;
+const User = require("./models/user");
 
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
-app.use(bodyParser.urlencoded({ extended:true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
+app.use(session({
+    secret: "our-passport-local-strategy-app",
+    resave: true,
+    saveUninitialized: true
+}));
 
+passport.serializeUser((user, cb) => {
+    cb(null, user._id);
+  });
+  
+  passport.deserializeUser((id, cb) => {
+    User.findById(id, (err, user) => {
+      if (err) { return cb(err); }
+      cb(null, user);
+    });
+  });
+  
+  app.use(flash());
+  passport.use(new LocalStrategy({
+    passReqToCallback: true
+  }, (req, username, password, next) => {
+    User.findOne({ username }, (err, user) => {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return next(null, false, { message: "Incorrect username" });
+      }
+      if (!bcrypt.compareSync(password, user.password)) {
+        return next(null, false, { message: "Incorrect password" });
+      }
+  
+      return next(null, user);
+    });
+  }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 mongoose.Promise = Promise;
 mongoose
-  .connect('mongodb://localhost/project-2-recipes', {useUnifiedTopology: true})
-  .then(() => {
-    console.log('Connected to Mongo!')
-  }).catch(err => {
-    console.error('Error connecting to mongo', err)
-  });
+    .connect('mongodb://localhost/project-2-recipes', { useUnifiedTopology: true })
+    .then(() => {
+        console.log('Connected to Mongo!')
+    }).catch(err => {
+        console.error('Error connecting to mongo', err)
+    });
 
 // ...other code
 
