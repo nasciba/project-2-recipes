@@ -13,6 +13,7 @@ const flash = require("connect-flash");
 const hbs = require('hbs');
 const port = process.env.PORT;
 const User = require("./models/user");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
@@ -54,8 +55,39 @@ passport.serializeUser((user, cb) => {
     });
   }));
 
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        callbackURL: "/auth/google/callback"
+      },
+      (accessToken, refreshToken, profile, done) => {
+        // to see the structure of the data in received response:
+        console.log("Google account details:", profile);
+  
+        User.findOne({ googleID: profile.id })
+          .then(user => {
+            if (user) {
+              done(null, user);
+              return;
+            }
+  
+            User.create({ googleID: profile.id })
+              .then(newUser => {
+                done(null, newUser);
+              })
+              .catch(err => done(err)); // closes User.create()
+          })
+          .catch(err => done(err)); // closes User.findOne()
+      }
+    )
+  );
+
 app.use(passport.initialize());
 app.use(passport.session());
+
+
 
 mongoose.Promise = Promise;
 mongoose
