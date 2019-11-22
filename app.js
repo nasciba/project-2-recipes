@@ -38,13 +38,18 @@ passport.serializeUser((user, cb) => {
   
   app.use(flash());
   passport.use(new LocalStrategy({
-    passReqToCallback: true
-  }, (req, username, password, next) => {
-    User.findOne({ username }, (err, user) => {
+    passReqToCallback: true,
+    usernameField: 'email'
+    //passwordField: 'passwd',
+    // passReqToCallback: true
+  }, (req, email, password, next) => {
+    User.findOne({ email }, (err, user) => {
       if (err) {
+        console.log('error 1');
         return next(err);
       }
       if (!user) {
+        console.log('error 2');
         return next(null, false, { message: "Incorrect username" });
       }
       if (!bcrypt.compareSync(password, user.password)) {
@@ -104,4 +109,4 @@ mongoose
 const router = require("./routes/auth-routes");
 app.use('/', router);
 
-app.listen(port, () => console.log("My bcrypt project is running at port 3003!"))
+app.listen(port, () => console.log(`My bcrypt project is running at port ${port}!`));
