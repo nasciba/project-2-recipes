@@ -3,6 +3,8 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const ensureLogin = require("connect-ensure-login");
+const nodemailer = require("nodemailer");
+const templates = require("../templates/template");
 
 // User model
 const User = require("../models/user");
@@ -18,9 +20,21 @@ router.get("/signup", (req, res, next) => {
 router.post("/signup", (req, res, next) => {
   const email = req.body.email;
   // const email = req.body.email;
-  const password = req.body.password;
+  // const password = req.body.password;
 
-  if (email === "" || password === "") {
+  // if (email === "" || password === "") {
+  //   res.render("auth/signup", { message: "Indicate email and password" });
+  //   return;
+  // }
+  const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  let token = '';
+
+  for (let i = 0; i < 25; i++) {
+      token += characters[Math.floor(Math.random() * characters.length )];
+  }
+
+  if (email === "") {
     res.render("auth/signup", { message: "Indicate email and password" });
     return;
   }
@@ -30,14 +44,14 @@ router.post("/signup", (req, res, next) => {
     if (user !== null) {
       res.render("auth/signup", { message: "The email already exists" });
       return;
-    }
-
-    const salt = bcrypt.genSaltSync(bcryptSalt);
-    const hashPass = bcrypt.hashSync(password, salt);
+    }else{
+      // const salt = bcrypt.genSaltSync(bcryptSalt);
+    // const hashPass = bcrypt.hashSync(password, salt);
 
     const newUser = new User({
       email,
-      password: hashPass
+      confirmationCode: token,
+      status: 'Pending_Confirmation'
     });
 
     newUser.save((err) => {
@@ -47,13 +61,72 @@ router.post("/signup", (req, res, next) => {
         res.redirect("/");
       }
     });
+
+    let transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'ratatouillereceitas@gmail.com',
+        pass: process.env.EMAILPSSWD
+      }
+    });
+  
+    let message ='Seja bem vindo, favor confirme o seu cadastro clicando';
+    let subject = 'Confirmação de cadastro';
+  
+    transporter.sendMail({
+      from: '"Receitinhas Ratatouille 🥗🍣🥙" <ratatouillereceitas@gmail.com>',
+      to: email, 
+      subject: subject, 
+      text: message,
+      html: `<b>${message} <a href="http://localhost:3004/confirm/${token}">aqui</a></b>`
+      //html: templates.templateExample(message),
+    })
+    .then()
+    .catch(error => console.log(error));
+      
+    }
+
+    
   })
   .catch(error => {
     next(error)
   })
+
+  
 });
 
-router.get("/login", (req, res, next) => {
+router.get('/confirm/:confirmationToken', (req, res) => {
+  let userToken = req.params.confirmationToken;
+  
+  User.findOne({ "confirmationCode": userToken })
+  .then(user => {
+    if (user !== null) {
+
+      User.updateOne(
+        {"email": user.email},
+        {$set: {"status": 'Active'}}
+      ).then(() =>{
+        console.log("Usuario atualizado");
+      })
+      .catch((error) => {
+        console.log("falha ao atualizar o perfil");
+      })
+
+      res.render("auth/confirmation", { message: `Cadastro concluído com sucesso! ${user.email}` });
+      return;
+    }else{
+      res.render("auth/confirmation", { message: "Cadastro não realizado!" });
+    }
+    
+    
+  })
+  .catch(error => {
+    next(error)
+  })
+
+});
+
+router.get("/login", (req, res) => {
   res.render("auth/login", { "message": req.flash("error") });
 });
 
@@ -66,10 +139,13 @@ router.post("/login",
     // passReqToCallback: true
 }));
 
+
+
 router.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/login");
 });
+
 
 router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
   res.render("private", { user: req.user });
@@ -91,6 +167,7 @@ router.get(
     failureRedirect: "/" // here you would redirect to the login page using traditional login approach
   })
 );
+
 
 
 module.exports = router;

@@ -5,6 +5,11 @@ const userSchema = new Schema({
   // username: String,
   email: String,
   password: String,
+  status:  {
+    type: String,
+    enum: ['Pending_Confirmation','Active'],
+  },
+  confirmationCode: String,
   googleID: String
 }, {
   timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
