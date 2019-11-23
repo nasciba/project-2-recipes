@@ -92,9 +92,8 @@ passport.serializeUser((user, cb) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-
 mongoose.Promise = Promise;
+
 mongoose
     .connect('mongodb://localhost/project-2-recipes', { useUnifiedTopology: true })
     .then(() => {
