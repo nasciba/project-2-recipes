@@ -103,7 +103,7 @@ router.get('/auth/:confirmationToken', (req, res) => {
         )
           .then(() => {
             console.log('E-mail confirmado, criar senha');
-            res.render('auth/createPassword')
+            res.render('auth/createPassword', {email: user.email});
             return;
           })
           .catch((error) => {
@@ -121,20 +121,31 @@ router.get('/auth/:confirmationToken', (req, res) => {
 });
 
 router.post('/auth/createPassword', (req, res) => {
-  console.log('entrou')
+  console.log('entrou');
+  const email = req.body.email;
   const psswd = req.body.psswd;
   const confPsswd = req.body.confPsswd;
-  if (psswd === "" || confPsswd === "") {
-    res.send('./auth/createPassword', {
+  if (psswd == "" || confPsswd == "") {
+    res.render('auth/createPassword', {
         message: "Preencha a senha para continuar"
     })
-}
-  if(psswd === confPsswd && passwd) {
-    // const salt = bcrypt.genSaltSync(bcryptSalt);
-        // const hashPass = bcrypt.hashSync(password, salt);
-    User.insertOne({
-
-    })
+  }
+  
+  if(psswd === confPsswd) {
+    const salt = bcrypt.genSaltSync(bcryptSalt);
+    const hashPass = bcrypt.hashSync(psswd, salt);
+    User.updateOne(
+      {"email": email},
+      { $set: { "password": hashPass } }
+      )
+      .then(() => {
+        console.log('Senha criada');
+        res.send("Senha Criada com sucesso.");
+        return;
+      })
+      .catch((error) => {
+        console.log("falha ao criar a senha");
+      })
   }
   // res.send("auth/createPassword")
 })
