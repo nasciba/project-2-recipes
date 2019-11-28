@@ -105,7 +105,8 @@ mongoose
 // ...other code
 
 // Routes
-const router = require("./routes/auth-routes");
-app.use('/', router);
+// const router = require("./routes/auth-routes");
+app.use('/', require("./routes/auth-routes"));
+app.use('/', require("./routes/site-routes"));
 
 app.listen(port, () => console.log(`My bcrypt project is running at port ${port}!`));
