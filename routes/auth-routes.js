@@ -13,6 +13,12 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
+// Routes
+
+router.get("/", (req, res) => {
+  res.render("home");
+})
+
 router.get("/signup", (req, res, next) => {
   res.render("auth/signup");
 });
@@ -35,7 +41,7 @@ router.post("/signup", (req, res, next) => {
   }
 
   if (email === "") {
-    res.render("auth/signup", { message: "Indicate email and password" });
+    res.render("auth/signup", { message: "Indicate an email address to sign up" });
     return;
   }
 
@@ -45,7 +51,7 @@ router.post("/signup", (req, res, next) => {
         res.render("auth/signup", { message: "The email already exists" });
         return;
       } else {
-          const newUser = new User({
+        const newUser = new User({
           email,
           confirmationCode: token,
           status: 'Pending_Confirmation'
@@ -55,7 +61,7 @@ router.post("/signup", (req, res, next) => {
           if (err) {
             res.render("auth/signup", { message: "Something went wrong" });
           } else {
-            res.redirect("/");
+            res.redirect("/"); //redirecionar para página de perfil
           }
         });
 
@@ -67,7 +73,7 @@ router.post("/signup", (req, res, next) => {
           }
         });
 
-        let message = 'Seja bem vindo, favor confirme o seu cadastro clicando';
+        let message = 'Seja bem vindo, por favor confirme o seu cadastro clicando';
         let subject = 'Confirmação de cadastro';
 
         transporter.sendMail({
@@ -96,7 +102,6 @@ router.get('/auth/:confirmationToken', (req, res) => {
   User.findOne({ "confirmationCode": userToken })
     .then(user => {
       if (user !== null) {
-
         User.updateOne(
           { "email": user.email },
           { $set: { "status": "Active" } }
@@ -107,7 +112,7 @@ router.get('/auth/:confirmationToken', (req, res) => {
             return;
           })
           .catch((error) => {
-            console.log("falha ao atualizar o perfil");
+            console.log("Falha ao criar senhar");
           })
 
       } else {
@@ -125,6 +130,7 @@ router.post('/auth/createPassword', (req, res) => {
   const email = req.body.email;
   const psswd = req.body.psswd;
   const confPsswd = req.body.confPsswd;
+
   if (psswd == "" || confPsswd == "") {
     res.render('auth/createPassword', {
         message: "Preencha a senha para continuar",
@@ -151,6 +157,7 @@ router.post('/auth/createPassword', (req, res) => {
   }
   // res.send("auth/createPassword")
 })
+
 
 router.get("/login", (req, res) => {
   res.render("auth/login", { "message": req.flash("error") });
