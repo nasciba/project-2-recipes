@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/nasciba/project-2-recipes#readme",
   "dependencies": {
+    "axios": "^0.19.0",
     "bcrypt": "^3.0.7",
     "connect-ensure-login": "^0.1.1",
     "connect-flash": "^0.1.1",
@@ -26,6 +27,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "hbs": "^4.0.6",
+    "mjml": "^4.5.1",
     "mongoose": "^5.7.12",
     "nodemailer": "^6.3.1",
     "nodemon": "^1.19.4",
