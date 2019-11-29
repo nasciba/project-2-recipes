@@ -95,7 +95,7 @@ app.use(passport.session());
 mongoose.Promise = Promise;
 
 mongoose
-    .connect('mongodb://localhost/project-2-recipes', { useUnifiedTopology: true })
+    .connect(process.env.MONGODB_URI, { useUnifiedTopology: true })
     .then(() => {
         console.log('Connected to Mongo!')
     }).catch(err => {

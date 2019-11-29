@@ -5,6 +5,7 @@ const passport = require("passport");
 const ensureLogin = require("connect-ensure-login");
 const nodemailer = require("nodemailer");
 const templates = require("../templates/template");
+const port = process.env.PORT;
 
 // User model
 const User = require("../models/user");
@@ -68,7 +69,7 @@ router.post("/signup", (req, res, next) => {
           to: email,
           subject: subject,
           text: message,
-          html: `<b>${message} <a href="http://localhost:3004/auth/${token}">aqui</a></b>`
+          html: `<b>${message} <a href="http://localhost:${port}/auth/${token}">aqui</a></b>`
           
         })
           .then()
