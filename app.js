@@ -14,6 +14,7 @@ const hbs = require('hbs');
 const port = process.env.PORT;
 const User = require("./models/user");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+//heroku help
 
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
