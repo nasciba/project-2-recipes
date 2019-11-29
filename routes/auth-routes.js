@@ -13,25 +13,12 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
-// Routes
-
-router.get("/", (req, res) => {
-  res.render("home");
-})
-
 router.get("/signup", (req, res, next) => {
   res.render("auth/signup");
 });
 
 router.post("/signup", (req, res, next) => {
   const email = req.body.email;
-  // const email = req.body.email;
-  // const password = req.body.password;
-
-  // if (email === "" || password === "") {
-  //   res.render("auth/signup", { message: "Indicate email and password" });
-  //   return;
-  // }
   const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   let token = '';
@@ -41,7 +28,7 @@ router.post("/signup", (req, res, next) => {
   }
 
   if (email === "") {
-    res.render("auth/signup", { message: "Indicate an email address to sign up" });
+    res.render("auth/signup", { message: "Indicate email and password" });
     return;
   }
 
@@ -51,7 +38,7 @@ router.post("/signup", (req, res, next) => {
         res.render("auth/signup", { message: "The email already exists" });
         return;
       } else {
-        const newUser = new User({
+          const newUser = new User({
           email,
           confirmationCode: token,
           status: 'Pending_Confirmation'
@@ -61,7 +48,7 @@ router.post("/signup", (req, res, next) => {
           if (err) {
             res.render("auth/signup", { message: "Something went wrong" });
           } else {
-            res.redirect("/"); //redirecionar para página de perfil
+            res.redirect("/");
           }
         });
 
@@ -73,7 +60,7 @@ router.post("/signup", (req, res, next) => {
           }
         });
 
-        let message = 'Seja bem vindo, por favor confirme o seu cadastro clicando';
+        let message = 'Seja bem vindo, favor confirme o seu cadastro clicando';
         let subject = 'Confirmação de cadastro';
 
         transporter.sendMail({
@@ -82,7 +69,7 @@ router.post("/signup", (req, res, next) => {
           subject: subject,
           text: message,
           html: `<b>${message} <a href="http://localhost:3004/auth/${token}">aqui</a></b>`
-          //html: templates.templateExample(message),
+          
         })
           .then()
           .catch(error => console.log(error));
@@ -102,6 +89,7 @@ router.get('/auth/:confirmationToken', (req, res) => {
   User.findOne({ "confirmationCode": userToken })
     .then(user => {
       if (user !== null) {
+
         User.updateOne(
           { "email": user.email },
           { $set: { "status": "Active" } }
@@ -112,7 +100,7 @@ router.get('/auth/:confirmationToken', (req, res) => {
             return;
           })
           .catch((error) => {
-            console.log("Falha ao criar senhar");
+            console.log("falha ao atualizar o perfil");
           })
 
       } else {
@@ -130,7 +118,6 @@ router.post('/auth/createPassword', (req, res) => {
   const email = req.body.email;
   const psswd = req.body.psswd;
   const confPsswd = req.body.confPsswd;
-
   if (psswd == "" || confPsswd == "") {
     res.render('auth/createPassword', {
         message: "Preencha a senha para continuar",
@@ -155,9 +142,8 @@ router.post('/auth/createPassword', (req, res) => {
         console.log("falha ao criar a senha");
       })
   }
-  // res.send("auth/createPassword")
+  
 })
-
 
 router.get("/login", (req, res) => {
   res.render("auth/login", { "message": req.flash("error") });
@@ -169,7 +155,7 @@ router.post("/login",
     successRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true
-    // passReqToCallback: true
+    
   }));
 
 
@@ -195,7 +181,7 @@ router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
     successRedirect: "/private-page",
-    failureRedirect: "/" // here you would redirect to the login page using traditional login approach
+    failureRedirect: "/" 
   })
 );
 
