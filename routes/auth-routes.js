@@ -31,7 +31,7 @@ router.post("/signup", (req, res, next) => {
   }
 
   if (email === "") {
-    res.render("auth/signup", { message: "Indicate email and password", layout:false });
+    res.render("auth/signup", { message: "Indicate email", layout:false });
     return;
   }
 
