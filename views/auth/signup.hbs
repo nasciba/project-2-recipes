@@ -10,33 +10,62 @@
   <title>Ratatouille receitas</title>
 </head>
 <body>
+
+  <section class="auth-board-fff">
+
+  <section class="auth-board">
+
+  <div class="signin-form-container">
+
   <div class="logo">
     <p id="p">
       <a href="/">Ratatouille</a>
     </p>
   </div>
+
+  <div class="center-text-top">
+    <p>Create your account</p>
+  </div>
   
   <form action="/signup" method="POST" id="form-container">
-    {{!-- <label for="username">Username</label> --}}
-    <label for="username">Email</label>
-    {{!-- <input id="username" type="text" name="username" placeholder="JonSnow"> --}}
-    <input id="username" type="email" name="email" placeholder="name@email.com">
-    <br><br>
-    {{!-- <label for="password">Password</label> --}}
-    {{!-- <input id="password" type="password" name="password" placeholder="**********"> --}}
+    
+    <div class="form-box">
+
+      <div class="form-field">
+        <label for="username">Email</label>
+      </div>
+
+      <div class="form-field">
+        <input id="username" type="email" name="email" placeholder="name@email.com">
+      </div>
+    
+    </div>
+    
 
     {{#if message}}
       <div class="error-message">{{ message }}</div>
     {{/if}}
-    <br><br>
-
-    <button>Create account</button>
-
-    <p class="account-message">
-      Do you already have an account?
-      <a href="/login">Login</a>
-    </p>
+    
+    <div class="form-box-button">
+      <input type="submit"value="Create account">
+    </div>    
   </form>
+
+    <div class="center-text-question">
+          <p>Do you already have an account? <a href="/login">Login</a></p>
+    </div>
+
+  </div>
+  </section>
+
+  <section class="auth-board">
+      <div class="signin-hero-banner">
+
+      </div>
+
+    </section>
+
+  </section>
   
 </body>
 </html>

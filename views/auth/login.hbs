@@ -11,52 +11,83 @@
 </head>
 <body>
   
-  <div class="logo">
-    <p id="p">
-      <a href="/">Ratatouille</a>
-    </p>
-  </div>
+  <section class="auth-board-fff">
 
-  
+    <section class="auth-board">
 
-  {{#unless user}}
-
-    <div class="btn-google">
-      <span class="ic-container"></span>
-      <a href="/auth/google" class="ic-description">Login With Google</a>
-    </div>
+      <div class="signin-form-container">      
     
+        <div class="logo">
+          <p id="p">
+            <a href="/">Ratatouille</a>
+          </p>
+        </div>  
 
-  {{/unless}}
+        <div class="center-text-top">
+          <p>Log in to your account</p>
+        </div>
 
-  
+        {{#unless user}}
 
-  <div>
-    <p>ou</p>
-  </div>
+          <div class="btn-google">
+            <span class="ic-container"></span>
+            <a href="/auth/google" class="ic-description">Login With Google</a>
+          </div>   
 
-  <form action="/login" method="POST">
-    <div>
-      {{!-- <label for="username">Username:</label> --}}
-      <label for="username">Email:</label>
-      {{!-- <input type="text" name="username"> --}}
-      <input type="text" name="email">
-    </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" name="password">
-    </div>
-    {{#if message}}
-    <div class="error-message">{{ message }}</div>
-    {{/if}}
-    <div>
-      <input type="submit" value="Log In">
-    </div>
-  </form>
+        {{/unless}}  
 
-  <div>
-    <p>Don't have a Ratatouille account? <a href="/signup">Create one</a></p>
-  </div>
+        <div class="center-text">
+          <p>or</p>
+        </div>
+
+        <form action="/login" method="POST" id="form-login">
+          <div class="form-box">
+            
+            <div class="form-field">
+              <label for="username">Email:</label>
+            </div>
+
+            <div class="form-field">
+              <input type="text" name="email">
+            </div>
+
+          </div>
+
+          <div class="form-box">
+
+            <div class="form-field">
+              <label for="password">Password:</label>
+            </div>
+            
+            <div class="form-field">
+              <input type="password" name="password">
+            </div>
+          </div>
+          {{#if message}}
+          <div class="error-message">{{ message }}</div>
+          {{/if}}
+
+          <div class="form-box-button">
+            <input type="submit" value="Log In">
+          </div>
+        </form>
+
+        <div class="center-text-question">
+          <p>Don't have a Ratatouille account? <a href="/signup">Create one</a></p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="auth-board">
+      <div class="signin-hero-banner">
+
+      </div>
+
+    </section>
+
+  </section>
 
 </body>
 </html>
