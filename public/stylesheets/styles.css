@@ -194,3 +194,69 @@ nav {
 .toggle .line3 {
     transform: rotate(45deg) translate(-5px, -6px); 
 }
+
+
+
+.btn-google{
+    -webkit-tap-highlight-color: transparent;
+    -webkit-box-direction: normal;
+    box-sizing: border-box;
+    font: inherit;
+    margin: 0;
+    overflow: visible;
+    text-transform: none;
+    -webkit-appearance: button;
+    cursor: pointer;
+    width: 100%;
+    max-width: 250px;
+    padding: 1px;
+    background-color: #4285f4;
+    border: none;
+    border-radius: 2px;
+    color: #fff;
+}
+
+.ic-container{
+    -webkit-tap-highlight-color: transparent;
+    -webkit-box-direction: normal;
+    font: inherit;
+    text-transform: none;
+    cursor: pointer;
+    color: #fff;
+    box-sizing: border-box;
+    margin: 0;
+    background: url('../images/logo_google.svg') center no-repeat #fff;
+    border-radius: 1px;
+    padding: 24px;
+    float: left;
+}
+
+.ic-description{
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-box-direction: normal;
+    font: inherit;
+    text-transform: none;
+    cursor: pointer;
+    color: #fff;
+    box-sizing: border-box;
+    margin: 0;
+    font-family: Roboto,arial,sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 48px;
+    letter-spacing: .21px;
+    margin-left: 16px;
+    margin-right: 6px;
+    vertical-align: top;
+}
+
+.row{
+    font-family: sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    font-size: 8px;
+    box-sizing: border-box;
+    margin: 0;
+    margin-left: -16px;
+    margin-right: -16px;
+}

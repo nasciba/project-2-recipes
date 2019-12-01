@@ -5,7 +5,6 @@ const passport = require("passport");
 const ensureLogin = require("connect-ensure-login");
 const nodemailer = require("nodemailer");
 const templates = require("../templates/template");
-const port = process.env.PORT;
 
 // User model
 const User = require("../models/user");
@@ -15,7 +14,10 @@ const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
 router.get("/signup", (req, res, next) => {
-  res.render("auth/signup");
+  let data = {
+    layout: false
+  }
+  res.render("auth/signup", data);
 });
 
 router.post("/signup", (req, res, next) => {
@@ -29,14 +31,14 @@ router.post("/signup", (req, res, next) => {
   }
 
   if (email === "") {
-    res.render("auth/signup", { message: "Indicate email and password" });
+    res.render("auth/signup", { message: "Indicate email and password", layout:false });
     return;
   }
 
   User.findOne({ email })
     .then(user => {
       if (user !== null) {
-        res.render("auth/signup", { message: "The email already exists" });
+        res.render("auth/signup", { message: "The email already exists", layout:false });
         return;
       } else {
           const newUser = new User({
@@ -47,7 +49,7 @@ router.post("/signup", (req, res, next) => {
 
         newUser.save((err) => {
           if (err) {
-            res.render("auth/signup", { message: "Something went wrong" });
+            res.render("auth/signup", { message: "Something went wrong", layout:false });
           } else {
             res.redirect("/");
           }
@@ -69,7 +71,7 @@ router.post("/signup", (req, res, next) => {
           to: email,
           subject: subject,
           text: message,
-          html: `<b>${message} <a href="http://localhost:${port}/auth/${token}">aqui</a></b>`
+          html: `<b>${message} <a href="${process.env.EMAIL_RESPONSE}/auth/${token}">aqui</a></b>`
           
         })
           .then()
@@ -84,8 +86,26 @@ router.post("/signup", (req, res, next) => {
 
 });
 
+router.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  })
+);
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/private-page",
+    failureRedirect: "/" 
+  })
+);
+
 router.get('/auth/:confirmationToken', (req, res) => {
   let userToken = req.params.confirmationToken;
+
 
   User.findOne({ "confirmationCode": userToken })
     .then(user => {
@@ -97,7 +117,7 @@ router.get('/auth/:confirmationToken', (req, res) => {
         )
           .then(() => {
             console.log('E-mail confirmado, criar senha');
-            res.render('auth/createPassword', {email: user.email});
+            res.render('auth/createPassword', {email: user.email, layout: false});
             return;
           })
           .catch((error) => {
@@ -147,7 +167,8 @@ router.post('/auth/createPassword', (req, res) => {
 })
 
 router.get("/login", (req, res) => {
-  res.render("auth/login", { "message": req.flash("error") });
+ 
+  res.render("auth/login",  { "message": req.flash("error"), layout : false });
 });
 
 
@@ -169,22 +190,7 @@ router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
   res.render("private", { user: req.user });
 });
 
-router.get(
-  "/auth/google",
-  passport.authenticate("google", {
-    scope: [
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/userinfo.email"
-    ]
-  })
-);
-router.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "/private-page",
-    failureRedirect: "/" 
-  })
-);
+
 
 
 module.exports = router;

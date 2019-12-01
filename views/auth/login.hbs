@@ -1,24 +1,64 @@
-<form action="/login" method="POST">
-  <div>
-    {{!-- <label for="username">Username:</label> --}}
-    <label for="username">Email:</label>
-    {{!-- <input type="text" name="username"> --}}
-    <input type="text" name="email">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="./stylesheets/styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+  <title>Ratatouille receitas</title>
+</head>
+<body>
+  
+  <div class="logo">
+    <p id="p">
+      <a href="/">Ratatouille</a>
+    </p>
   </div>
-  <div>
-    <label for="password">Password:</label>
-    <input type="password" name="password">
-  </div>
-  {{#if message}}
-  <div class="error-message">{{ message }}</div>
-  {{/if}}
-  <div>
-    <input type="submit" value="Log In">
-  </div>
-</form>
 
-{{#unless user}}
+  
+
+  {{#unless user}}
+
+    <div class="btn-google">
+      <span class="ic-container"></span>
+      <a href="/auth/google" class="ic-description">Login With Google</a>
+    </div>
+    
+
+  {{/unless}}
+
+  
+
   <div>
-    <a href="/auth/google">Login With Google</a>
+    <p>ou</p>
   </div>
-{{/unless}}
+
+  <form action="/login" method="POST">
+    <div>
+      {{!-- <label for="username">Username:</label> --}}
+      <label for="username">Email:</label>
+      {{!-- <input type="text" name="username"> --}}
+      <input type="text" name="email">
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" name="password">
+    </div>
+    {{#if message}}
+    <div class="error-message">{{ message }}</div>
+    {{/if}}
+    <div>
+      <input type="submit" value="Log In">
+    </div>
+  </form>
+
+  <div>
+    <p>Don't have a Ratatouille account? <a href="/signup">Create one</a></p>
+  </div>
+
+</body>
+</html>
+
+

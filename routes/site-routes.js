@@ -4,6 +4,10 @@ const router = express.Router();
 const ensureLogin = require("connect-ensure-login");
 const axios = require("axios");
 
+  router.get("/", (req, res, next) => {
+      res.render("home");
+  });
+
 
   router.get("/receitas", /*ensureLogin.ensureLoggedIn(),*/ (req, res) => {
     
