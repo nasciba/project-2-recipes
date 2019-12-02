@@ -3,6 +3,8 @@
     padding: 0px;
     box-sizing: border-box;
 }
+
+
 .header {
     background-image: url("https://cdn.pixabay.com/photo/2015/10/02/15/59/olive-oil-968657_1280.jpg");
     height: 80%;
@@ -88,6 +90,15 @@ html, body {
 #main {
     overflow: auto;
 }
+
+.recipes-container {
+    text-align: center;
+    font-family: Poppins, sans-serif;
+    background-color: rgb(255, 230, 204);
+    padding: 25px;
+    margin: 25px;
+}
+
 .logo {
     font-family: 'Pacifico', cursive;
     font-size: 24px;
@@ -104,7 +115,7 @@ nav {
     justify-content: space-around;
     align-items: center;
     min-height: 8vh;
-    background-color:#FFE6CC;
+    background-color:white;
     color: #403933;
     font-family: 'Poppins', sans-serif;
 }
