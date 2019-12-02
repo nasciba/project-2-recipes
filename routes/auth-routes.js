@@ -13,25 +13,15 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
-// Routes
-
-router.get("/", (req, res) => {
-  res.render("home");
-})
-
 router.get("/signup", (req, res, next) => {
-  res.render("auth/signup");
+  let data = {
+    layout: false
+  }
+  res.render("auth/signup", data);
 });
 
 router.post("/signup", (req, res, next) => {
   const email = req.body.email;
-  // const email = req.body.email;
-  // const password = req.body.password;
-
-  // if (email === "" || password === "") {
-  //   res.render("auth/signup", { message: "Indicate email and password" });
-  //   return;
-  // }
   const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   let token = '';
@@ -41,17 +31,17 @@ router.post("/signup", (req, res, next) => {
   }
 
   if (email === "") {
-    res.render("auth/signup", { message: "Indicate an email address to sign up" });
+    res.render("auth/signup", { message: "Indicate email", layout:false });
     return;
   }
 
   User.findOne({ email })
     .then(user => {
       if (user !== null) {
-        res.render("auth/signup", { message: "The email already exists" });
+        res.render("auth/signup", { message: "The email already exists", layout:false });
         return;
       } else {
-        const newUser = new User({
+          const newUser = new User({
           email,
           confirmationCode: token,
           status: 'Pending_Confirmation'
@@ -59,9 +49,9 @@ router.post("/signup", (req, res, next) => {
 
         newUser.save((err) => {
           if (err) {
-            res.render("auth/signup", { message: "Something went wrong" });
+            res.render("auth/signup", { message: "Something went wrong", layout:false });
           } else {
-            res.redirect("/"); //redirecionar para página de perfil
+            res.redirect("/");
           }
         });
 
@@ -73,7 +63,7 @@ router.post("/signup", (req, res, next) => {
           }
         });
 
-        let message = 'Seja bem vindo, por favor confirme o seu cadastro clicando';
+        let message = 'Seja bem vindo, favor confirme o seu cadastro clicando';
         let subject = 'Confirmação de cadastro';
 
         transporter.sendMail({
@@ -81,8 +71,8 @@ router.post("/signup", (req, res, next) => {
           to: email,
           subject: subject,
           text: message,
-          html: `<b>${message} <a href="http://localhost:3004/auth/${token}">aqui</a></b>`
-          //html: templates.templateExample(message),
+          html: `<b>${message} <a href="${process.env.EMAIL_RESPONSE}/auth/${token}">aqui</a></b>`
+          
         })
           .then()
           .catch(error => console.log(error));
@@ -96,23 +86,42 @@ router.post("/signup", (req, res, next) => {
 
 });
 
+router.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  })
+);
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/private-page",
+    failureRedirect: "/" 
+  })
+);
+
 router.get('/auth/:confirmationToken', (req, res) => {
   let userToken = req.params.confirmationToken;
+
 
   User.findOne({ "confirmationCode": userToken })
     .then(user => {
       if (user !== null) {
+
         User.updateOne(
           { "email": user.email },
           { $set: { "status": "Active" } }
         )
           .then(() => {
             console.log('E-mail confirmado, criar senha');
-            res.render('auth/createPassword', {email: user.email});
+            res.render('auth/createPassword', {email: user.email, layout: false});
             return;
           })
           .catch((error) => {
-            console.log("Falha ao criar senhar");
+            console.log("falha ao atualizar o perfil");
           })
 
       } else {
@@ -130,7 +139,6 @@ router.post('/auth/createPassword', (req, res) => {
   const email = req.body.email;
   const psswd = req.body.psswd;
   const confPsswd = req.body.confPsswd;
-
   if (psswd == "" || confPsswd == "") {
     res.render('auth/createPassword', {
         message: "Preencha a senha para continuar",
@@ -155,12 +163,12 @@ router.post('/auth/createPassword', (req, res) => {
         console.log("falha ao criar a senha");
       })
   }
-  // res.send("auth/createPassword")
+  
 })
 
-
 router.get("/login", (req, res) => {
-  res.render("auth/login", { "message": req.flash("error") });
+ 
+  res.render("auth/login",  { "message": req.flash("error"), layout : false });
 });
 
 
@@ -169,7 +177,7 @@ router.post("/login",
     successRedirect: "/",
     failureRedirect: "/login",
     failureFlash: true
-    // passReqToCallback: true
+    
   }));
 
 
@@ -182,22 +190,7 @@ router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
   res.render("private", { user: req.user });
 });
 
-router.get(
-  "/auth/google",
-  passport.authenticate("google", {
-    scope: [
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/userinfo.email"
-    ]
-  })
-);
-router.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "/private-page",
-    failureRedirect: "/" // here you would redirect to the login page using traditional login approach
-  })
-);
+
 
 
 module.exports = router;

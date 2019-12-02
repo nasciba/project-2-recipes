@@ -14,6 +14,7 @@ const hbs = require('hbs');
 const port = process.env.PORT;
 const User = require("./models/user");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+//heroku help
 
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
@@ -95,7 +96,7 @@ app.use(passport.session());
 mongoose.Promise = Promise;
 
 mongoose
-    .connect('mongodb://localhost/project-2-recipes', { useUnifiedTopology: true })
+    .connect(process.env.MONGODB_URI, { useUnifiedTopology: true })
     .then(() => {
         console.log('Connected to Mongo!')
     }).catch(err => {
