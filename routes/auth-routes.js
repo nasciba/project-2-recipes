@@ -141,8 +141,9 @@ router.post('/auth/createPassword', (req, res) => {
   const confPsswd = req.body.confPsswd;
   if (psswd == "" || confPsswd == "") {
     res.render('auth/createPassword', {
-        message: "Preencha a senha para continuar",
-        email: email
+        message: "Missing password",
+        email: email,
+        layout: false
     });
     return;
   }
