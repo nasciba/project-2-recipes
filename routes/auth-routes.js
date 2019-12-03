@@ -156,11 +156,11 @@ router.post('/auth/createPassword', (req, res) => {
       )
       .then(() => {
         console.log('Senha criada');
-        res.send("Senha Criada com sucesso.");
+        res.render("auth/account-created");
         return;
       })
       .catch((error) => {
-        console.log("falha ao criar a senha");
+        console.log("falha ao criar a senha", {layout: false});
       })
   }
   
