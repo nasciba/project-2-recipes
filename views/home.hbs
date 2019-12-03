@@ -1,28 +1,43 @@
-<div class="header">
-    <header class="text-container">
+<header class="header">
+    <div class="header__align">
         <h1>Receitinhas Ratatouille</h1>
+
         <form action="/busca" method="GET">
             <input type="text" name="busca">
         </form>
-        <a href="search-results" class="btn-search" role="button">BUSCAR</a>
-        {{!-- <button type="submit" class="btn-search"> BUSCAR </button> --}}
-    </header>
-</div>
+        <a href="search-results" class="btn-search" role="button">SEARCH</a>
+    </div>
+</header>
 
-<body>
-    <div>
+<div class="home__categories">
 
-        <div class="recipes-container">
-            <h3>Mais acessadas</h3>
-        </div>
+    <div class="recipes__container">
+        <h3>Most viewed</h3>
+        <div class="align__cards__recip">
+            <div class="cards__recip">
+                <!-- create dynamic view most viewed -->
+            </div>
 
-        <div class="recipes-container">
-            <h3>Mais favoritadas</h3>
-        </div>
-
-        <div class="recipes-container">
-            <h3>Mais compartilhadas</h3>
         </div>
     </div>
 
-</body>
+    <div class="recipes__container">
+        <h3>Most starred</h3>
+        <div class="align__cards__recip">
+             <div class="cards__recip">
+            <!-- create dynamic view most starred -->
+            </div>
+        </div>
+
+    </div>
+
+    <div class="recipes__container">
+        <h3>Most shared</h3>
+        <div class="align__cards__recip">
+            <div class="cards__recip">
+                <!-- create dynamic view most shared -->
+            </div>
+
+        </div>
+    </div>
+</div>

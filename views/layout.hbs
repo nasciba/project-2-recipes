@@ -9,40 +9,43 @@
     <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
     <script src="/dom.js"></script>
-    <title>testestestes</title>
+    <title>Ratatouille</title>
 
 </head>
 
 <body>
-    <nav>
-        <div class="logo">
-            <p id="p">
-                <a href="/">Ratatouille</a>
-            </p>
+
+    <div id="page__container">
+        <div id="content__wrap">
+            <nav>
+                <div class="logo">
+                    <p id="p">
+                        <a href="home">Ratatouille</a>
+                    </p>
+                </div>
+                <ul class="nav-links">
+                    <li>
+                        <a href="/categorias">CATEGORIES</a>
+                    </li>
+                    <li>
+                        <a href="/login">SIGN IN</a>
+                    </li>
+                </ul>
+                <div class="menu-icon">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+            </nav>
+
+            {{{body}}}
+
         </div>
-        <ul class="nav-links">
-            <li>
-                <a href="/categorias">CATEGORIAS</a>
-            </li>
-            <li>
-                <a href="/login">ENTRAR</a>
-            </li>
-        </ul>
-        <div class="menu-icon">
-            <div class="line1"></div>
-            <div class="line2"></div>
-            <div class="line3"></div>
-        </div>
-    </nav>
-
-    {{{body}}}
-
-
-
-    <footer>
-        <p> Ratatouille </p>
-    </footer>
-
+        
+        <footer id="footer">
+            <p> Ratatouille </p>
+        </footer>
+    </div>
     <script src="/js/dom.js"></script>
 
 </body>
