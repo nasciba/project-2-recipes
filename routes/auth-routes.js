@@ -171,6 +171,9 @@ router.get("/login", (req, res) => {
   res.render("auth/login",  { "message": req.flash("error"), layout : false });
 });
 
+router.get("auth/login", (req, res) => {
+  res.render("auth/login",  { "message": req.flash("error"), layout : false });
+})
 
 router.post("/login",
   passport.authenticate("local", {
