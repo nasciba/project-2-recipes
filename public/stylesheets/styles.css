@@ -124,6 +124,7 @@ nav {
     transform: rotate(45deg) translate(-5px, -6px); 
 }
 
+
 #footer {
     background-color: #403933;
     height: 4.5rem;
@@ -228,6 +229,7 @@ nav {
 }
 
 /* views authentication */
+
 .btn-google{
     -webkit-tap-highlight-color: transparent;
     -webkit-box-direction: normal;
@@ -245,7 +247,6 @@ nav {
     border: none;
     border-radius: 2px;
     color: #fff;
-    
 }
 
 .ic-container{
@@ -299,12 +300,10 @@ nav {
 
 .signin-form-container{
     font-family: 'Poppins', sans-serif;
-    
     -webkit-tap-highlight-color: transparent;    
     box-sizing: border-box;
-    
     padding: 36px;
-    
+
 }
 
 .signin-hero-banner{
@@ -365,5 +364,9 @@ nav {
     text-align: center;
     font-size: 15px; 
     max-width: 350px;
+
+}
+
+
 }
 
