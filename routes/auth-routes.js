@@ -156,7 +156,7 @@ router.post('/auth/createPassword', (req, res) => {
       )
       .then(() => {
         console.log('Senha criada');
-        res.render("auth/account-created");
+        res.render("auth/account-created", {layout: false});
         return;
       })
       .catch((error) => {
