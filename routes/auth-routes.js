@@ -51,7 +51,7 @@ router.post("/signup", (req, res, next) => {
           if (err) {
             res.render("auth/signup", { message: "Something went wrong", layout:false });
           } else {
-            res.redirect("/");
+            res.render("auth/verify", {layout: false});
           }
         });
 
@@ -156,11 +156,11 @@ router.post('/auth/createPassword', (req, res) => {
       )
       .then(() => {
         console.log('Senha criada');
-        res.send("Senha Criada com sucesso.");
+        res.render("auth/account-created");
         return;
       })
       .catch((error) => {
-        console.log("falha ao criar a senha");
+        console.log("falha ao criar a senha", {layout: false});
       })
   }
   

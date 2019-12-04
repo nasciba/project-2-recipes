@@ -1,103 +1,21 @@
-*{
+* {
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
 }
 
-
-.header {
-    background-image: url("https://cdn.pixabay.com/photo/2015/10/02/15/59/olive-oil-968657_1280.jpg");
-    height: 80%;
-    background-position:center;
-    background-size: cover;
-                  
-}
-
-.text-container {
-    text-align: center;
-    align-items: center;
-    font-family: 'Poppins', sans-serif;
-    position: absolute;
-    width: 100%;
-    color: white;
-    height: auto;
-    margin-top: 200px;
-    display: flex;
-    flex-direction: column;
+#page__container {
+    position: relative;
+    min-height: 100vh;
     
 }
-.btn-text {
-    margin-top: 20px;
-    font-size: 1.3em;
-    font-family: 'Poppins', sans-serif;
 
-}
-.btn-search {
-    display: inline-block;
-    width: 200px;
-    font-weight: bold;
-    padding: 10px;
-    margin-top:15px;
-    color: #fff;
-    border: 1px solid #fff;
-    text-align: center;
-    outline:none;
-    text-decoration: none;
-    outline: none;
-    transition: background-color 0.2s ease-out, color 0.2s ease-out;
+#content__wrap {
+    padding-bottom: 2.5rem;
+        
 }
 
-.btn-search:hover, .btn-search:active {
-    background-color: #fff;
-    color: #000;
-    transition: background-color 0.3s ease-in, color 0.3s  ease-in;
-}
-
-@media only screen and (max-width: 726px) {
-    .text-container {
-        margin-top: 150px;
-          
-    }
-    h1 {
-        font-size: 5em;
-    }
-
-}
-
-.footer {
-    background-color: #403933;
-    height: 100px;
-    margin-top: -100px;
-    color: #FFE7C4
-}
-
-.footer p {
-    padding: 15px 15px 15px 15px;
-    font-family: 'Pacifico', cursive; 
-    font-size: 24px;
-    letter-spacing: 2px;
-}
-
-html, body {
-    height: 100%;
-
-}
-
-#container {
-    min-height: 100%
-}
-
-#main {
-    overflow: auto;
-}
-
-.recipes-container {
-    text-align: center;
-    font-family: Poppins, sans-serif;
-    background-color: rgb(255, 230, 204);
-    padding: 25px;
-    margin: 25px;
-}
+/* view layout */
 
 .logo {
     font-family: 'Pacifico', cursive;
@@ -207,6 +125,110 @@ nav {
 }
 
 
+#footer {
+    background-color: #403933;
+    height: 4.5rem;
+    width: 100%;
+    bottom: 0;
+    color: #FFE7C4;
+    position: absolute;
+       
+    
+}
+
+#footer p {
+    padding: 15px 15px 15px 15px;
+    font-family: 'Pacifico', cursive; 
+    font-size: 24px;
+    letter-spacing: 2px;
+}
+
+/* view home.hbs */
+
+.header {
+    background-image: url("https://cdn.pixabay.com/photo/2015/10/02/15/59/olive-oil-968657_1280.jpg");
+    background-position:center;
+    background-size: cover;
+                    
+}
+
+.header__align {
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+    color: white;
+    height: 600px;
+    padding-bottom: 20px;
+    margin-bottom:20px;
+    display: flex;
+    flex-direction: column;
+    
+}
+.btn-text {
+    margin-top: 20px;
+    font-size: 1.3em;
+    font-family: 'Poppins', sans-serif;
+
+}
+.btn-search {
+    display: inline-block;
+    width: 200px;
+    font-weight: bold;
+    padding: 10px;
+    margin-top:15px;
+    color: #fff;
+    border: 1px solid #fff;
+    text-align: center;
+    outline:none;
+    text-decoration: none;
+    outline: none;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out;
+}
+
+.btn-search:hover, .btn-search:active {
+    background-color: #fff;
+    color: #000;
+    transition: background-color 0.3s ease-in, color 0.3s  ease-in;
+}
+
+.recipes__container {
+    text-align: center;
+    font-family: Poppins, sans-serif;
+    align-items: center;
+    
+    
+}
+
+.align__cards__recip {
+    display:flex;
+    max-width: 100vw;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    
+}
+
+.cards__recip {
+    margin: 30px;
+    height: 200px;
+    width: 300px;
+    background-color: burlywood
+    /* inserir formatacao cards receitas home.hbs */
+    
+
+}
+
+@media only screen and (max-width: 768px) {
+    .header__align h1 {
+        font-size: 2em;
+        text-align: center;
+          
+    }
+    
+}
+
+/* views authentication */
 
 .btn-google{
     -webkit-tap-highlight-color: transparent;
@@ -225,7 +247,6 @@ nav {
     border: none;
     border-radius: 2px;
     color: #fff;
-    /* border: 1px solid black; */
 }
 
 .ic-container{
@@ -252,14 +273,12 @@ nav {
     cursor: pointer;
     color: #fff;
     box-sizing: border-box;
-    
     font-family: 'Poppins', sans-serif;
     font-size: 16px;
     font-weight: 500;
     line-height: 48px;
     letter-spacing: .21px;
     margin-left: 60px;
-    /* margin-right: 6px; */
     vertical-align: top;    
     
 }
@@ -281,19 +300,16 @@ nav {
 
 .signin-form-container{
     font-family: 'Poppins', sans-serif;
-    
     -webkit-tap-highlight-color: transparent;    
     box-sizing: border-box;
-    
     padding: 36px;
-    /* border: 1px solid black; */
+
 }
 
 .signin-hero-banner{
     font-family: sans-serif;
     -webkit-tap-highlight-color: transparent;
     box-sizing: border-box;
-    /* border: 1px solid black; */
     width: 100%;
     height: 100vh;
     background: url('../images/banner_signin.jpg') right bottom no-repeat #fff;
@@ -306,7 +322,6 @@ nav {
 }
 
 .center-text{
-    /* border: 1px solid black; */
     margin: 20px 0px;
     text-align: center;
     max-width: 350px;
@@ -349,4 +364,9 @@ nav {
     text-align: center;
     font-size: 15px; 
     max-width: 350px;
+
 }
+
+
+}
+
