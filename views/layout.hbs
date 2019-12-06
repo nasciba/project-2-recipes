@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="./stylesheets/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="/dom.js"></script>
     <title>Ratatouille</title>
 
@@ -22,6 +23,15 @@
                         <a href="/">Ratatouille</a>
                     </p>
                 </div>
+                 <div class="form">
+                    <form action="/busca" method="GET">
+                        <input type="text" name="search">
+                    </form>
+                    
+                     <a href="search-results" class="" role="button">
+                         <i class="fa fa-search search__btn"></i>
+                     </a> 
+                </div>
                 <ul class="nav-links">
                     <li>
                         <a href="/categories">CATEGORIES</a>
@@ -30,14 +40,15 @@
                         <a href="/login">SIGN IN</a>
                     </li>
                 </ul>
+               
                 <div class="menu-icon">
                     <div class="line1"></div>
                     <div class="line2"></div>
                     <div class="line3"></div>
                 </div>
             </nav>
-            
-                {{{body}}}
+
+            {{{body}}}
            
         </div>
 
