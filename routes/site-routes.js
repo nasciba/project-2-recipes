@@ -3,6 +3,9 @@ const express = require("express");
 const router = express.Router();
 const ensureLogin = require("connect-ensure-login");
 const axios = require("axios");
+const APIHandler = require("./APIHandler");
+const recipesAPI = new APIHandler('http://localhost:8000');
+
 
 router.get("/", (req, res, next) => {
   res.render("home");
@@ -50,26 +53,56 @@ router.get('/vegan', (req, res) => {
 
 router.get('/gluten-free', (req, res) => {
   res.render('gluten-free', //{inserir objeto receitas gluten free}
-)})
+  )
+})
 
 router.get('/desserts', (req, res) => {
   res.render('desserts', //{inserir objeto receitas desserts}
-)})
+  )
+})
 
 router.get('/vegetarian', (req, res) => {
   res.render('vegetarian', //{inserir objeto receitas vegetarian}
-)})
+  )
+})
 
 router.get('/dairy-free', (req, res) => {
   res.render('dairy-free', //{inserir objeto receitas dairy free}
-)})
+  )
+})
 
 router.get('/cheap', (req, res) => {
   res.render('cheap', //{inserir objeto receitas dairy free}
-)})
-
-router.get('/search', (req, res) => {
-  res.render('search')
+  )
 })
+
+//teste api
+
+// router.get("/receitasteste", (req, res) => {
+//   // console.log('entrou rota');
+//   recipesAPI.getFullList()
+//     .then(responseFromApi => {
+//       // console.log('entrou');
+//       res.send(responseFromApi.data);
+//     })
+//     .catch(err => {
+//       res.send(err);
+//     })
+ 
+// });
+
+// router.get('/search', (req, res) => {
+//   const search = request.query
+//   recipesAPI.getFullList(search.extendedIngredients.name)
+//     .then(responseFromApi => {
+//       res.send(responseFromApi.data);
+//     })
+//     .catch(err => {
+//       res.send(err);
+//     })
+  
+// })
+
+
 
 module.exports = router;
