@@ -51,7 +51,7 @@ router.post("/signup", (req, res, next) => {
           if (err) {
             res.render("auth/signup", { message: "Something went wrong", layout:false });
           } else {
-            res.render("auth/verify", {layout: false});
+            res.render("auth/verify");
           }
         });
 
@@ -156,7 +156,7 @@ router.post('/auth/createPassword', (req, res) => {
       )
       .then(() => {
         console.log('Senha criada');
-        res.render("auth/account-created");
+        res.render("auth/account-created", {layout: false});
         return;
       })
       .catch((error) => {
@@ -171,6 +171,9 @@ router.get("/login", (req, res) => {
   res.render("auth/login",  { "message": req.flash("error"), layout : false });
 });
 
+router.get("auth/login", (req, res) => {
+  res.render("auth/login",  { "message": req.flash("error"), layout : false });
+})
 
 router.post("/login",
   passport.authenticate("local", {
