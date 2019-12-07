@@ -23,14 +23,16 @@
                         <a href="/">Ratatouille</a>
                     </p>
                 </div>
-                 <div class="form">
-                    <form action="/busca" method="GET">
+                <div class="form">
+                    <form action="/searchResults" method="GET">
                         <input type="text" name="search">
+                        <input type="submit" value="Search">
+                        </input>
+                        {{!-- <a href="search" class="" role="button">
+                      <i class="fa fa-search search__btn"></i>
+                     </a>  --}}
                     </form>
-                    
-                     <a href="search-results" class="" role="button">
-                         <i class="fa fa-search search__btn"></i>
-                     </a> 
+
                 </div>
                 <ul class="nav-links">
                     <li>
@@ -40,7 +42,7 @@
                         <a href="/login">SIGN IN</a>
                     </li>
                 </ul>
-               
+
                 <div class="menu-icon">
                     <div class="line1"></div>
                     <div class="line2"></div>
@@ -49,7 +51,7 @@
             </nav>
 
             {{{body}}}
-           
+
         </div>
 
         <footer id="footer">
