@@ -15,28 +15,40 @@ const randomRecipeSchema = new Schema({
       lowFodmap: Boolean,
       ketogenic: Boolean,
       whole30: Boolean,
-      sourceUrl: String,
-      spoonacularSourceUrl: String,
+      sourceUrl: {
+        type: String,
+        format:"uri"
+        },
+      spoonacularSourceUrl: {
+        type: String,
+        format:"uri"
+        },
       aggregateLikes: Number,
       spoonacularScore: Number,
       healthScore: Number,
       creditsText: String,
       sourceName: String,
       pricePerServing: Number,
-      // extendedIngredients : [{    
-      //       id: Number,
-      //       aisle: String,
-      //       image: String,
-      //       name: String,
-      //       amount: Number,
-      //       unit: String,
-      //       unitShort: String,
-      //       unitLong: String,
-      //       originalString: String,
-      //       metaInformation:[{
-      //       info: String
-      //     }]    
-      // }],
+      extendedIngredients : {
+        type: Array,
+        items:{
+          type: Object,
+          properties: {
+            id: Number,
+            aisle: String,
+            image: {
+              type: String,
+              format:"uri"
+            },
+            name: String,
+            amount: Number,
+            unit: String,
+            unitShort: String,
+            unitLong: String,
+            originalString: String,
+          }
+        }
+      },
       id: Number,
       title: String,
       readyInMinutes: Number,
@@ -53,9 +65,12 @@ const randomRecipeSchema = new Schema({
       occasions: [{
         type: String,
       }],
-      winePairing: [{
-        type: String,
-      }],
+      winePairing: {
+        type : Object,
+        items: {
+          type: Array
+        }
+      },
       instructions: String
 }, {
   timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
