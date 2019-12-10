@@ -20,6 +20,7 @@ app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
+hbs.registerPartials(__dirname + '/views/partials');
 app.use(session({
     secret: "our-passport-local-strategy-app",
     resave: true,

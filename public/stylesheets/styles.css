@@ -22,7 +22,7 @@
 
 .logo {
     font-family: 'Pacifico', cursive;
-    font-size: 24px;
+    font-size: 39px;
     letter-spacing: 2px;
 
 }
@@ -44,47 +44,56 @@ nav {
 .form {
     display:flex;
     justify-content: space-evenly;
-    width: 40%;
+    width: 50%;
     height: 43px;
     border: none;
     position: relative;
+    border-bottom: 2px solid black;
     /* background:blue  */
  }
 
  .form input {
-     width: 500px;
+     width: 600px;
      outline: none;
-     margin-left:5px;
-     margin:5px;
+     /* margin-left:5px; */
+     padding-left: 2px;
+     margin-top:6px;
      padding-bottom:5px;
-     height: 100%;
+     height: 90%;
      border: none;
      border-bottom: 2px solid black;
-     text-align: center;
+     text-align: left;
      font-size: 25px;
      
  }
+
+ .form button {
+    border: none;
+    background-color: white;
+    
+}
 
 .search__btn {
     text-decoration: none;
     color: black;
     padding-top:12px;
-    
-
 }
 
-.nav-links {
+.nav-links {    
+    
     display: flex;
-    justify-content:space-around;
-    width: 40%;
+    justify-content:flex-end;    
+    width: 25%;
     
 }
 
 .nav-links li {
+    
     list-style: none; 
   
 }
 .nav-links a {
+    margin-left: 40px;
     color:#403933;
     text-decoration: none;
     letter-spacing: 3px;
@@ -459,3 +468,49 @@ nav {
     font-size: 30px;
  }
 
+ .cards-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* border: 1px solid black; */
+    margin: auto;
+    
+    width: 1100px;  
+  }
+
+.card-img-top{
+    width: 300px; 
+    /* border: 1px solid blue; */
+}
+  
+ .card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 340px; 
+    margin-bottom: 28px;
+    
+    /* border: 1px solid pink;     */
+ }
+
+ .card-body{
+    width: 300px; 
+    height:60px;
+    /* border: 1px solid black; */
+ }
+
+ .card-title{
+    font-family: BrandonText,Arial;
+    font-weight: 400;
+    color: #1c1c1c;
+    display: -webkit-box;
+    max-height: 10.8rem;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    white-space: normal;
+    text-overflow: ellipsis;
+    font-size: 1rem;
+    line-height: 1.6;
+ }

@@ -6,6 +6,7 @@ const ensureLogin = require("connect-ensure-login");
 const nodemailer = require("nodemailer");
 const templates = require("../templates/template");
 
+
 // User model
 const User = require("../models/user");
 

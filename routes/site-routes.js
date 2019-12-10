@@ -6,12 +6,14 @@ const axios = require("axios");
 const RandomRecipe = require("../models/random-recipe");
 const APIHandler = require("./APIHandler");
 
+
 const recipesAPI = new APIHandler('http://localhost:8000');
 
 
-router.get("/", (req, res, next) => {
+router.get("/", (req, res, next) => {  
   res.render("home");
 });
+
 
 router.get("/recipes", (req, res) => {
 
@@ -95,7 +97,7 @@ router.get("/recipes", (req, res) => {
   //retorna todas receitas do banco
   RandomRecipe.find({})
     .then(recipes => {
-      res.render("receitas", { recipes });
+      res.render("recipes", { recipes });
     })
     .catch(err => {
       console.log(err);
@@ -156,7 +158,6 @@ router.get('/cheap', (req, res) => {
   res.render('cheap', //{inserir objeto receitas dairy free}
   )
 })
-
 
 
 
