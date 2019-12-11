@@ -10,7 +10,8 @@ const userSchema = new Schema({
     enum: ['Pending_Confirmation','Active'],
   },
   confirmationCode: String,
-  googleID: String
+  googleID: String,
+  favoriteRecipe: [{type: Schema.Types.ObjectId, ref: 'RandomRecipe'}] 
 }, {
   timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
 });
