@@ -31,7 +31,7 @@ const randomRecipeSchema = new Schema({
       pricePerServing: Number,
       extendedIngredients : {
         type: Array,
-        items:{
+          items:{
           type: Object,
           properties: {
             id: Number,
@@ -76,6 +76,8 @@ const randomRecipeSchema = new Schema({
   timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
 });
 
+randomRecipeSchema.index({title: 'text', 'extendedIngredients.name': 'text'});
+// randomRecipeSchema.plugin(searchable);
 const RandomRecipe = mongoose.model("RandomRecipe", randomRecipeSchema);
 
 module.exports = RandomRecipe;

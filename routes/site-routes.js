@@ -103,25 +103,25 @@ router.get("/recipes", (req, res) => {
 
 });
 
+
+
 router.get("/searchResults", (req, res) => {
   const querySearch = req.query.search;
   console.log(querySearch);
-    RandomRecipe.find({"extendedIngredients.name": {$exists: querySearch}})
-    .then(search => {
-      res.send(search);
-      })
-    .catch(err => console.log(err))
-})
+  RandomRecipe.find({ 'extendedIngredients.name': querySearch })
 
-// router.get("/searchResults", (req, res) => {
-//   const querySearch = req.query.search;
-//   console.log(querySearch);
-//     RandomRecipe.find({$or : [{"extendedIngredients.name": {$exists: querySearch}}, {"title" : {$exists: querySearch} }]})
-//     .then(search => {
-//       res.send(search);
-//       })
-//     .catch(err => console.log(err))
-// })
+    .then(recipes => {
+      console.log(recipes)
+      res.render("search", { recipes });
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  RandomRecipe.find({ $text: { $search: querySearch } })
+    .then(recipes => {
+      res.render("search", { recipes });
+    })
+})
 
 router.get('/categories', (req, res) => {
   res.render('categories');
