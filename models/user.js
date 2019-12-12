@@ -11,6 +11,7 @@ const userSchema = new Schema({
   },
   confirmationCode: String,
   googleID: String,
+  givenName: String,
   favoriteRecipe: [{type: Schema.Types.ObjectId, ref: 'RandomRecipe'}] 
 }, {
   timestamps: { createdAt: "created_at", updatedAt: "updated_at" }

@@ -98,10 +98,29 @@ router.get(
 );
 router.get(
   "/auth/google/callback",
-  passport.authenticate("google", {
-    successRedirect: "/private-page",
-    failureRedirect: "/" 
-  })
+  passport.authenticate(
+    "google", 
+    {
+      // successRedirect: "/private-page",
+      failureRedirect: "/" 
+    }    
+  ),
+  function(req, res) {
+
+    User.findOne({_id: req.session.passport.user})
+    .then(user => {
+      console.log(user);
+      req.session.user = user;
+
+      console.log('request google >>',req.session);
+      res.redirect('/');
+    })
+    .catch(err => {
+      console.log(err);
+    })
+    
+    
+  }
 );
 
 router.get('/auth/:confirmationToken', (req, res) => {
@@ -176,13 +195,21 @@ router.get("auth/login", (req, res) => {
   res.render("auth/login",  { "message": req.flash("error"), layout : false });
 })
 
-router.post("/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true
+// router.post("/login",
+//   passport.authenticate("local", {
+//     successRedirect: "/",
+//     failureRedirect: "/login",
+//     failureFlash: true    
+//   }));
+
+router.post('/login',
+  passport.authenticate('local'),
+  function(req, res) {
+    // If this function gets called, authentication was successful.
+    // `req.user` contains the authenticated user.
+    res.redirect('/');
     
-  }));
+  });
 
 
 router.get("/logout", (req, res) => {

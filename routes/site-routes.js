@@ -12,7 +12,8 @@ const recipesAPI = new APIHandler('http://localhost:8000');
 
 
 router.get("/", (req, res, next) => {  
-  res.render("home");
+  const {user} = req.session;
+  res.render("home", {user});
 });
 
 router.get("/favorite", (req, res, next) => { 
@@ -23,7 +24,7 @@ router.get("/favorite", (req, res, next) => {
   })
   .catch(error => {
     console.log(error);
-  });
+  }); 
 
 });
 
@@ -32,11 +33,23 @@ router.get("/favorites", (req, res, next) => {
   RandomRecipe.find({_id: "5debd0d466b3942449667fb1"})
   .then(recipes =>{
     res.render("recipes", { recipes });
-    console.log(recipes.title);
+    //console.log(recipes.title);
   })
   .catch(err =>{
     console.log(err);
   });
+
+  console.log('session >>', req.session.passport.user);
+  User.findOne({_id: req.session.passport.user})
+  .then(user => {
+    console.log(user);
+    // req.session.passport.givenName = user.givenName;
+  })
+  .catch(err => {
+    console.log(err);
+  })
+
+  console.log('session >>', req.session);
 
 });
 
@@ -45,7 +58,7 @@ router.get("/favorites", (req, res, next) => {
 router.get("/receitas", /*ensureLogin.ensureLoggedIn(),*/ (req, res) => {   
     
     
-  let numberOfRecipes = 100;      
+  let numberOfRecipes = 300;      
   
   axios({
       "method":"GET",

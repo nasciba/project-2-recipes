@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="../public/js/dom.js"></script>
+    <script src="/js/dom.js"></script>
     <title>Ratatouille</title>
 
 </head>
@@ -40,9 +40,18 @@
                     <li>
                         <a href="/categories">CATEGORIES</a>
                     </li>
+                    
+                    {{#if user}}
+                    <li>
+                        <a href="/login">Hi, {{user.givenName}}</a>
+                    </li>
+                    {{else}}
                     <li>
                         <a href="/login">SIGN IN</a>
                     </li>
+                    {{/if}}
+
+               
                 </ul>
 
                 <div class="menu-icon">
