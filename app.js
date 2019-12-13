@@ -20,6 +20,7 @@ app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
+hbs.registerPartials(__dirname + '/views/partials');
 app.use(session({
     secret: "our-passport-local-strategy-app",
     resave: true,
@@ -43,7 +44,7 @@ passport.serializeUser((user, cb) => {
     usernameField: 'email'
     //passwordField: 'passwd',
     // passReqToCallback: true
-  }, (req, email, password, next) => {
+  }, (req, email, password, next) => {    
     User.findOne({ email }, (err, user) => {
       if (err) {
         console.log('error 1');
@@ -70,17 +71,19 @@ passport.serializeUser((user, cb) => {
       },
       (accessToken, refreshToken, profile, done) => {
         // to see the structure of the data in received response:
-        console.log("Google account details:", profile);
+        // console.log("Google account details:", profile);
   
         User.findOne({ googleID: profile.id })
           .then(user => {
-            if (user) {
+            if (user) {             
+
               done(null, user);
               return;
             }
   
-            User.create({ googleID: profile.id })
+            User.create({ googleID: profile.id, givenName: profile.name.givenName })
               .then(newUser => {
+                
                 done(null, newUser);
               })
               .catch(err => done(err)); // closes User.create()

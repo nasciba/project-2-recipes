@@ -4,13 +4,134 @@ const router = express.Router();
 const ensureLogin = require("connect-ensure-login");
 const axios = require("axios");
 const RandomRecipe = require("../models/random-recipe");
+const User = require("../models/user");
 const APIHandler = require("./APIHandler");
+
 
 const recipesAPI = new APIHandler('http://localhost:8000');
 
 
-router.get("/", (req, res, next) => {
-  res.render("home");
+router.get("/", (req, res, next) => {  
+  const {user} = req.session;
+  res.render("home", {user});
+});
+
+router.get("/favorite", (req, res, next) => { 
+
+  User.update({email: 'mcnvrodrigues@gmail.com'}, {$push: {favoriteRecipe: "5debd0d466b3942449667fb1"}})
+  .then(user => {
+    res.send({user});
+  })
+  .catch(error => {
+    console.log(error);
+  }); 
+
+});
+
+router.get("/favorites", (req, res, next) => { 
+
+  RandomRecipe.find({_id: "5debd0d466b3942449667fb1"})
+  .then(recipes =>{
+    res.render("recipes", { recipes });
+    //console.log(recipes.title);
+  })
+  .catch(err =>{
+    console.log(err);
+  });
+
+  console.log('session >>', req.session.passport.user);
+  User.findOne({_id: req.session.passport.user})
+  .then(user => {
+    console.log(user);
+    // req.session.passport.givenName = user.givenName;
+  })
+  .catch(err => {
+    console.log(err);
+  })
+
+  console.log('session >>', req.session);
+
+});
+
+
+
+router.get("/receitas", /*ensureLogin.ensureLoggedIn(),*/ (req, res) => {   
+    
+    
+  let numberOfRecipes = 300;      
+  
+  axios({
+      "method":"GET",
+      "url":"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random",
+      "headers":{
+      "content-type":"application/octet-stream",
+      "x-rapidapi-host":process.env.FOOD_NUTRITION_HOST,
+      "x-rapidapi-key":process.env.FOOD_NUTRITION_KEY
+      },"params":{
+      "number": `${numberOfRecipes}`
+      }
+      })
+      .then(  (response)=>{
+          let recipes = response.data.recipes;
+          // res.send({response});
+
+          recipes.forEach( recipe => {              
+
+            const newRandomRecipe = new RandomRecipe({
+                vegetarian: recipe.vegetarian,
+                vegan: recipe.vegan,
+                glutenFree: recipe.glutenFree,
+                dairyFree: recipe.dairyFree,
+                veryHealthy: recipe.veryHealthy,
+                cheap: recipe.cheap,
+                veryPopular: recipe.veryPopular,
+                sustainable: recipe.sustainable,
+                weightWatcherSmartPoints: recipe.weightWatcherSmartPoints,
+                gaps: recipe.gaps,
+                lowFodmap: recipe.lowFodmap,
+                ketogenic: recipe.ketogenic,
+                whole30: recipe.whole30,
+                sourceUrl: recipe.sourceUrl,
+                spoonacularSourceUrl: recipe.spoonacularSourceUrl,
+                aggregateLikes: recipe.aggregateLikes,
+                spoonacularScore: recipe.spoonacularScore,
+                healthScore: recipe.healthScore,
+                creditsText: recipe.creditsText,
+                sourceName: recipe.sourceName,
+                pricePerServing: recipe.pricePerServing,
+                extendedIngredients: recipe.extendedIngredients,
+                id: recipe.id,
+                title: recipe.title,
+                readyInMinutes: recipe.readyInMinutes,
+                servings: recipe.servings,
+                image: recipe.image,
+                imageType: recipe.imageType,
+                cuisines: recipe.cuisines,
+                dishTypes: recipe.dishTypes,
+                diets: recipe.diets,
+                occasions: recipe.occasions,
+                winePairing: recipe.winePairing,
+                instructions: recipe.instructions
+            });
+
+            newRandomRecipe.save((err) => {
+              if (err) {
+                console.log('erro ao salvar as receitas no banco!', err);
+              } else {
+                console.log('Sucesso as salvar as receitas no banco!');
+              }
+            });
+    
+          })
+          // res.send("receitas", {recipes});
+          res.send(recipes);
+          //console.log(recipes[0].diets)
+      })
+      .catch((error)=>{
+        console.log(error)
+      });
+  // res.render("receitas", {recipes});
+  
 });
 
 router.get("/recipes", (req, res) => {
@@ -95,7 +216,7 @@ router.get("/recipes", (req, res) => {
   //retorna todas receitas do banco
   RandomRecipe.find({})
     .then(recipes => {
-      res.render("receitas", { recipes });
+      res.render("recipes", { recipes });
     })
     .catch(err => {
       console.log(err);
@@ -103,13 +224,11 @@ router.get("/recipes", (req, res) => {
 
 });
 
-
-
 router.get("/searchResults", (req, res) => {
   const querySearch = req.query.search;
   console.log(querySearch);
-  RandomRecipe.find({ 'extendedIngredients.name': querySearch })
 
+  RandomRecipe.find({ 'extendedIngredients.name': querySearch })
     .then(recipes => {
       console.log(recipes)
       res.render("search", { recipes });
@@ -122,6 +241,19 @@ router.get("/searchResults", (req, res) => {
       res.render("search", { recipes });
     })
 })
+
+router.get('/recipes/:id',(req, res) => {
+  const id = req.params.id;
+
+  RandomRecipe.findById(id)
+  .then(recipe => 
+    res.render("recipepartial", { recipe } )
+  )
+
+  .catch(error => {
+    console.log(error);
+  })
+}) 
 
 router.get('/categories', (req, res) => {
   res.render('categories');
@@ -156,8 +288,5 @@ router.get('/cheap', (req, res) => {
   res.render('cheap', //{inserir objeto receitas dairy free}
   )
 })
-
-
-
 
 module.exports = router;

@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="/dom.js"></script>
+    <script src="/js/dom.js"></script>
     <title>Ratatouille</title>
 
 </head>
@@ -23,24 +23,35 @@
                         <a href="/">Ratatouille</a>
                     </p>
                 </div>
-                <div class="form">
-                    <form action="/searchResults" method="GET">
-                        <input type="text" name="search">
-                        <input type="submit" value="Search">
-                        </input>
-                        {{!-- <a href="search" class="" role="button">
-                      <i class="fa fa-search search__btn"></i>
-                     </a>  --}}
-                    </form>
 
+                <div class="form">
+
+                    <form action="/searchResults" method="GET">
+                        <input type="text" name="search" placeholder="search for recipes...">
+                        <button type="submit">
+                            <i class="fa fa-search search__btn"></i>
+                        </button>                        
+                    </form>
                 </div>
+
+                
+
                 <ul class="nav-links">
                     <li>
                         <a href="/categories">CATEGORIES</a>
                     </li>
+                    
+                    {{#if user}}
+                    <li>
+                        <a href="/login">Hi, {{user.givenName}}</a>
+                    </li>
+                    {{else}}
                     <li>
                         <a href="/login">SIGN IN</a>
                     </li>
+                    {{/if}}
+
+               
                 </ul>
 
                 <div class="menu-icon">
