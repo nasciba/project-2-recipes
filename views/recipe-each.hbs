@@ -1,0 +1,28 @@
+<div id="recipe__container">
+    {{#each recipe}}
+    {{#if id}}
+    <div id="header__recipes">
+        <div class="recipe__left">
+            <img id="img__recipe" src={{this.image}} alt={{this.creditsText}}>
+        </div>
+        <div id="text__header" class="recipe__right">
+            <h2>{{this.title}} </h2>
+            <p>Ready in:</p>
+            <p>{{this.readyInMinutes}} minutes</p>
+        </div>
+    </div>
+    <div id="recipe__ingred__prep">
+        <div id="ingredients"class="recipe__left">
+            <h3>Ingredients</h3>
+            {{#each this.extendedIngredients}}
+            {{ originalString }} <br>
+            {{/each}}
+        </div>
+        <div id="directions" class="recipe__right">
+            <h3 style="text-align: center;">Directions</h3>
+            <p> {{this.instructions}}
+        </div>
+        {{/if}}
+        {{/each}}
+    </div>
+</div>
