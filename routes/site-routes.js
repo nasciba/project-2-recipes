@@ -248,7 +248,8 @@ router.get('/recipes/:id', (req, res) => {
 
   RandomRecipe.findById(id)
     .then(recipe =>
-      res.render("recipe-each", { recipe })
+      res.render("recipe-each", { recipe }),
+     
     )
 
     .catch(error => {
@@ -261,13 +262,28 @@ router.get('/categories', (req, res) => {
 })
 
 router.get('/vegan', (req, res) => {
-  res.render('vegan', //{inserir objeto receitas veganas}
-  )
+  RandomRecipe.find({ vegan: true })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('vegan', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+
 })
 
 router.get('/gluten-free', (req, res) => {
-  res.render('gluten-free', //{inserir objeto receitas gluten free}
-  )
+  RandomRecipe.find({ dairyFree: true })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('dairy-free', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
 })
 
 router.get('/desserts', (req, res) => {
@@ -276,18 +292,39 @@ router.get('/desserts', (req, res) => {
 })
 
 router.get('/vegetarian', (req, res) => {
-  res.render('vegetarian', //{inserir objeto receitas vegetarian}
-  )
+  RandomRecipe.find({ vegetarian: true })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('vegetarian', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
 })
 
 router.get('/dairy-free', (req, res) => {
-  res.render('dairy-free', //{inserir objeto receitas dairy free}
-  )
+  RandomRecipe.find({ dairyFree: true })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('dairy-free', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
 })
 
-router.get('/cheap', (req, res) => {
-  res.render('cheap', //{inserir objeto receitas dairy free}
-  )
+router.get('/healthy', (req, res) => {
+  RandomRecipe.find({ veryHealthy: true })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('healthy', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
 })
 
 module.exports = router;
