@@ -23,7 +23,7 @@ router.post("/favorite/:recipeId", (req, res, next) => {
     let recipeId = req.params.recipeId;
     console.log(recipeId);
 
-    User.find({favoriteRecipe: recipeId}).then(ans =>{      
+    User.find({_id: req.session.passport.user, favoriteRecipe: recipeId}).then(ans =>{      
       if(ans.length == 0){
         User.updateOne({ _id: req.session.passport.user }, { $push: { favoriteRecipe: recipeId} })
         .then(user => {
@@ -34,6 +34,13 @@ router.post("/favorite/:recipeId", (req, res, next) => {
         });
         console.log('recipe it is not on the list');
       }else{
+        User.updateOne({ _id: req.session.passport.user }, { $pull: { favoriteRecipe: recipeId} })
+        .then(user => {
+          console.log('recipe added to user');
+        })
+        .catch(error => {
+          console.log(error);
+        });
         console.log('recipe it is already on the list');
       }
     }).catch(err => {
@@ -267,7 +274,7 @@ router.get("/searchResults", (req, res) => {
 
   RandomRecipe.find({ 'extendedIngredients.name': { $all: [querySearch] } })
     .then(recipes => {
-      console.log(recipes)
+      //console.log(recipes)
       res.render("search", { recipes });
     })
     .catch(err => {
@@ -300,7 +307,7 @@ router.get('/categories', (req, res) => {
 router.get('/vegan', (req, res) => {
   RandomRecipe.find({ vegan: true })
     .then(recipes => {
-      console.log(recipes)
+      //console.log(recipes)
       res.render('vegan', { recipes })
 
     })
@@ -313,7 +320,7 @@ router.get('/vegan', (req, res) => {
 router.get('/gluten-free', (req, res) => {
   RandomRecipe.find({ dairyFree: true })
     .then(recipes => {
-      console.log(recipes)
+      //console.log(recipes)
       res.render('dairy-free', { recipes })
 
     })
@@ -330,7 +337,7 @@ router.get('/desserts', (req, res) => {
 router.get('/vegetarian', (req, res) => {
   RandomRecipe.find({ vegetarian: true })
     .then(recipes => {
-      console.log(recipes)
+      //console.log(recipes)
       res.render('vegetarian', { recipes })
 
     })
@@ -342,7 +349,7 @@ router.get('/vegetarian', (req, res) => {
 router.get('/dairy-free', (req, res) => {
   RandomRecipe.find({ dairyFree: true })
     .then(recipes => {
-      console.log(recipes)
+      //console.log(recipes)
       res.render('dairy-free', { recipes })
 
     })
@@ -354,7 +361,7 @@ router.get('/dairy-free', (req, res) => {
 router.get('/healthy', (req, res) => {
   RandomRecipe.find({ veryHealthy: true })
     .then(recipes => {
-      console.log(recipes)
+      //console.log(recipes)
       res.render('healthy', { recipes })
 
     })

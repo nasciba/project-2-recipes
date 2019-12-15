@@ -1,6 +1,10 @@
+<div class="recipe__container">
+    <div class="cards-container">
+        {{#each recipes}}
+        {{> recipeCard }}
+        {{/each}}
+    </div>
+</div>
 
-{{#if user}}
-  <div>
-    <a href="/">Index</a>
-  </div>
-{{/if}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/js/favorite.js"></script>

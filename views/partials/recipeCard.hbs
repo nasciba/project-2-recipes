@@ -6,7 +6,12 @@
       <h3 class="card-title">{{this.title}}</h3>
     </a>
 
-    <button class='fav' recipeId="{{this._id}}">favoritar</button>
+    {{!-- <button class='fav' recipeId="{{this._id}}">favoritar</button> --}}
+    
+    <div class='like-container'>
+      <i class='like-i' recipeId="{{this._id}}"></i>
+      <span class='like-span'>liked!</span>
+    </div>
 
   </div>
 </div>

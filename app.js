@@ -8,6 +8,7 @@ const MongoStore = require("connect-mongo")(session);
 const mongoose = require('mongoose');
 const express = require("express");
 const app = express();
+
 const bodyParser = require('body-parser');
 const flash = require("connect-flash");
 const hbs = require('hbs');
@@ -21,6 +22,7 @@ app.set('views', __dirname + '/views');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 hbs.registerPartials(__dirname + '/views/partials');
+
 app.use(session({
     secret: "our-passport-local-strategy-app",
     resave: true,

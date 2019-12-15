@@ -5,6 +5,7 @@ const passport = require("passport");
 const ensureLogin = require("connect-ensure-login");
 const nodemailer = require("nodemailer");
 const templates = require("../templates/template");
+const RandomRecipe = require("../models/random-recipe");
 
 
 // User model
@@ -218,7 +219,25 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
-  res.render("private", { user: req.user });
+
+  User.findById({_id: req.session.passport.user})
+    .then(usr => {      
+
+      RandomRecipe.find({ _id: {$in: usr.favoriteRecipe} })
+      .then(recipes => {
+        
+        res.render("private", { user: req.user, recipes });
+
+      })
+      .catch(error => {
+        console.log('/private-page User.RandomRecipe.find ', error);
+      })
+
+    })
+    .catch(error => {
+      console.log('/private-page User.findById ', error);
+    })
+  
 });
 
 
