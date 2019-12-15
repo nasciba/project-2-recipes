@@ -16,6 +16,42 @@ router.get("/", (req, res, next) => {
   res.render("home", { user });
 });
 
+router.post("/favorite/:recipeId", (req, res, next) => {
+
+  if(req.session.passport){
+    console.log("user logged");
+    let recipeId = req.params.recipeId;
+    console.log(recipeId);
+
+    User.find({favoriteRecipe: recipeId}).then(ans =>{      
+      if(ans.length == 0){
+        User.updateOne({ _id: req.session.passport.user }, { $push: { favoriteRecipe: recipeId} })
+        .then(user => {
+          console.log('recipe added to user');
+        })
+        .catch(error => {
+          console.log(error);
+        });
+        console.log('recipe it is not on the list');
+      }else{
+        console.log('recipe it is already on the list');
+      }
+    }).catch(err => {
+      console.log('favorite/:recipeId ', err);
+    })
+
+    
+
+    res.send(true);
+  }else{
+    console.log("user not logged");
+    res.send(false);
+  }
+
+  
+  
+});
+
 router.get("/favorite", (req, res, next) => {
 
   User.update({ email: 'mcnvrodrigues@gmail.com' }, { $push: { favoriteRecipe: "5debd0d466b3942449667fb1" } })
@@ -196,12 +232,12 @@ router.get("/recipes", (req, res) => {
                 if (err) {
                   console.log('erro ao salvar as receitas no banco!', err);
                 } else {
-                  console.log('Sucesso as salvar as receitas no banco!');
+                  // console.log('Sucesso as salvar as receitas no banco!');
                 }
               });
 
             } else {
-              console.log('receita ' + titleRecipe + ' já existe!');
+              // console.log('receita ' + titleRecipe + ' já existe!');
             }
           })
           .catch(err => {

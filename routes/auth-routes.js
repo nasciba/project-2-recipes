@@ -113,7 +113,7 @@ router.get(
       req.session.user = user;
 
       console.log('request google >>',req.session);
-      res.redirect('/');
+      res.redirect('/private-page');
     })
     .catch(err => {
       console.log(err);
@@ -207,7 +207,7 @@ router.post('/login',
   function(req, res) {
     // If this function gets called, authentication was successful.
     // `req.user` contains the authenticated user.
-    res.redirect('/');
+    res.redirect('/private-page');
     
   });
 

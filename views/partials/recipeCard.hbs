@@ -1,10 +1,12 @@
 <div class="card">
-  <img class="card-img-top" src={{this.image}} alt={{this.creditsText}}>
+  <img class="card-img-top" src="{{this.image}}" alt="{{this.creditsText}}">
   <div class="card-body">
 
     <a href="/recipes/{{this._id}}">
       <h3 class="card-title">{{this.title}}</h3>
     </a>
+
+    <button class='fav' recipeId="{{this._id}}">favoritar</button>
 
   </div>
 </div>
