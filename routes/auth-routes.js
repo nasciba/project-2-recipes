@@ -226,26 +226,30 @@ router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
       RandomRecipe.find({ _id: {$in: usr.favoriteRecipe} })
       .then(recipes => {
 
-        if(req.session.passport){
+        recipes.forEach(recipe => {
+          recipe.favorite = true; 
+        });
+
+        // if(req.session.passport){
         
-          recipes.forEach(recipe => {
-            User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
-              if(ans !== null){              
-                recipe.favorite = true;              
-              }
+        //   recipes.forEach(recipe => {
+        //     User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+        //       if(ans !== null){              
+        //         recipe.favorite = true;              
+        //       }
               
-            })
-            .catch(err => {
-              console.log(err);
-            });
-          });
+        //     })
+        //     .catch(err => {
+        //       console.log(err);
+        //     });
+        //   });
           
-          res.render("private", { user: req.user, recipes });
-        }else{
-          res.render("private", { user: req.user, recipes });
-        } 
+        //   res.render("private", { user: req.user, recipes });
+        // }else{
+        //   res.render("private", { user: req.user, recipes });
+        // } 
         
-        // res.render("private", { user: req.user, recipes });
+        res.render("private", { user: req.user, recipes });
 
       })
       .catch(error => {

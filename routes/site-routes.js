@@ -262,7 +262,7 @@ router.get("/recipes", (req, res) => {
   //retorna todas receitas do banco
   RandomRecipe.find({})
     .then(recipes => {
-      res.render("recipes", { recipes });
+      res.render("recipes", { recipes, user: req.user });
     })
     .catch(err => {
       console.log(err);
@@ -278,14 +278,14 @@ router.get("/searchResults", (req, res) => {
   RandomRecipe.find({ 'extendedIngredients.name': { $all: [querySearch] } })
     .then(recipes => {
       //console.log(recipes)
-      res.render("search", { recipes });
+      res.render("search", { recipes, user: req.user });
     })
     .catch(err => {
       console.log(err)
     })
   RandomRecipe.find({ $text: { $search: querySearch } })
     .then(recipes => {
-      res.render("search", { recipes });
+      res.render("search", { recipes, user: req.user });
     })
 })
 
@@ -294,7 +294,7 @@ router.get('/recipes/:id', (req, res) => {
 
   RandomRecipe.findById(id)
     .then(recipe =>
-      res.render("recipe-each", { recipe }),
+      res.render("recipe-each", { recipe, user: req.user }),
      
     )
 
@@ -304,7 +304,7 @@ router.get('/recipes/:id', (req, res) => {
 })
 
 router.get('/categories', (req, res) => {
-  res.render('categories');
+  res.render('categories', {user: req.user});
 })
 
 router.get('/vegan', (req, res) => {
@@ -325,9 +325,9 @@ router.get('/vegan', (req, res) => {
           });
         });
         
-        res.render('vegan', { recipes })
+        res.render('vegan', { recipes, user: req.user })
       }else{
-        res.render('vegan', { recipes })
+        res.render('vegan', { recipes, user: req.user })
       } 
       // res.render('vegan', { recipes })
 
@@ -356,9 +356,9 @@ router.get('/gluten-free', (req, res) => {
           });
         });
         
-        res.render('dairy-free', { recipes })
+        res.render('dairy-free', { recipes, user: req.user })
       }else{
-        res.render('dairy-free', { recipes })
+        res.render('dairy-free', { recipes, user: req.user })
       } 
       // res.render('dairy-free', { recipes })
 
@@ -369,7 +369,7 @@ router.get('/gluten-free', (req, res) => {
 })
 
 router.get('/desserts', (req, res) => {
-  res.render('desserts', //{inserir objeto receitas desserts}
+  res.render('desserts',  {user: req.user}//{inserir objeto receitas desserts}
   )
 })
 
@@ -391,9 +391,9 @@ router.get('/vegetarian', (req, res) => {
           });
         });
         
-        res.render('vegetarian', { recipes })
+        res.render('vegetarian', { recipes, user: req.user })
       }else{
-        res.render('vegetarian', { recipes })
+        res.render('vegetarian', { recipes, user: req.user })
       }    
       // res.render('vegetarian', { recipes })
 
@@ -423,9 +423,9 @@ router.get('/dairy-free', (req, res) => {
           });
         });
         
-        res.render('dairy-free', { recipes })
+        res.render('dairy-free', { recipes, user: req.user })
       }else{
-        res.render('dairy-free', { recipes })
+        res.render('dairy-free', { recipes, user: req.user })
       }     
 
     })
@@ -453,9 +453,9 @@ router.get('/healthy', (req, res) => {
           });
         });
         
-        res.render('healthy', { recipes })
+        res.render('healthy', { recipes, user: req.user })
       }else{
-        res.render('healthy', { recipes })
+        res.render('healthy', { recipes, user: req.user })
       }      
 
     })

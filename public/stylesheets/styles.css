@@ -665,3 +665,15 @@ nav {
     100% {padding:10px 12px 8px;}
   }
   /* botão like */
+
+  #profile-info{
+      margin-left: -175px;
+      width: 300px;
+      height: 200px;
+      position: absolute;
+      border: 1px solid black;
+  }
+
+  .hidden-section {
+    display: none; 
+  }

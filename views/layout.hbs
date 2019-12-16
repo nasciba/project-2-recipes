@@ -44,7 +44,11 @@
                     
                     {{#if user}}
                     <li>
-                        <a href="/login">Hi, {{user.givenName}}</a>
+                        <a href="/private-page" id='profile'>PROFILE</a>
+                        <div id='profile-info' class = "cl hidden-section">
+
+                        </div>
+                        {{!-- <a href="/private-page">Hi, {{user.givenName}}</a> --}}
                     </li>
                     {{else}}
                     <li>
