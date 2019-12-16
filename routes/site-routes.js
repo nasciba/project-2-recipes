@@ -287,8 +287,14 @@ router.get('/gluten-free', (req, res) => {
 })
 
 router.get('/desserts', (req, res) => {
-  res.render('desserts', //{inserir objeto receitas desserts}
-  )
+  RandomRecipe.find({ $text: { $search: "chocolate pudding cake pie cookie oreo biscuit brownie ice cream popsicle muffin" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('desserts', { recipes })
+    })
+    .catch(error => {
+      console.log(error);
+    })
 })
 
 router.get('/vegetarian', (req, res) => {
@@ -327,4 +333,60 @@ router.get('/healthy', (req, res) => {
     })
 })
 
+// { field: { $in: [<value1>, <value2>, ... <valueN> ] } }
+router.get('/salads', (req, res) => {
+  RandomRecipe.find({ $text: { $search: "salad" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('salad', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+})
+router.get('/pasta', (req, res) => {
+  RandomRecipe.find({ $text: { $search: "pasta macaroni noodles" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('pasta', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+})
+router.get('/meat', (req, res) => {
+  RandomRecipe.find({ $text: { $search: "meat beef bacon steak turkey ham chicken pork branzino squid seafood shrimp fish salmon" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('meat', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+})
+router.get('/soups', (req, res) => {
+  RandomRecipe.find({ $text: { $search: "soup" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('soups', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+})
+router.get('/drinks', (req, res) => {
+  RandomRecipe.find({ $text: { $search: "smoothie juice cocktail" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('drinks', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+})
 module.exports = router;

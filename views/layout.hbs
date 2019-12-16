@@ -23,24 +23,22 @@
                         <a href="/">Ratatouille</a>
                     </p>
                 </div>
-
                 <div class="form">
 
                     <form action="/searchResults" method="GET">
                         <input type="text" name="search" placeholder="search for recipes...">
                         <button type="submit">
                             <i class="fa fa-search search__btn"></i>
-                        </button>                        
+                        </button>
                     </form>
                 </div>
 
-                
 
                 <ul class="nav-links">
                     <li>
                         <a href="/categories">CATEGORIES</a>
                     </li>
-                    
+
                     {{#if user}}
                     <li>
                         <a href="/login">Hi, {{user.givenName}}</a>
@@ -51,7 +49,7 @@
                     </li>
                     {{/if}}
 
-               
+
                 </ul>
 
                 <div class="menu-icon">
