@@ -20,5 +20,10 @@ const navSlide = () => {
     })
 }
 
+
 navSlide();
+
+
+
+
 

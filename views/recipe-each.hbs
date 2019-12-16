@@ -1,0 +1,30 @@
+<div class="recipe__container">
+    {{#each recipe}}
+    {{#if id}}
+    <div id="header__recipes">
+        <div class="width_header">
+            <img id="img__recipe" src={{this.image}} alt={{this.creditsText}}>
+        </div>
+        <div id="text__header" class="width_header">
+            <h2 style="color: #4EBFC2;" class="title__recipes">{{this.title}} </h2>
+            <div id="recipe__ready">
+                <p>Ready in:</p>
+                <p>{{this.readyInMinutes}} minutes</p>
+            </div>
+        </div>
+    </div>
+    <div id="recipe__ingred__prep">
+        <div id="ingredients" class="width_header">
+            <h3 class="title__recipes">INGREDIENTS</h3>
+            {{#each this.extendedIngredients}}
+            {{ originalString }} <br>
+            {{/each}}
+        </div>
+        <div id="directions" class="width_header">
+            <h3 class="title__recipes">DIRECTIONS</h3>
+            <p> {{this.instructions}}
+        </div>
+        {{/if}}
+        {{/each}}
+    </div>
+</div>

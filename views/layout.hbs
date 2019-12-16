@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="./stylesheets/styles.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/styles.css">
     <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="/dom.js"></script>
+    <script src="/js/dom.js"></script>
     <title>Ratatouille</title>
 
 </head>
@@ -23,24 +23,35 @@
                         <a href="/">Ratatouille</a>
                     </p>
                 </div>
-                 <div class="form">
-                    <form action="/busca" method="GET">
-                        <input type="text" name="search">
+                <div class="form">
+
+                    <form action="/searchResults" method="GET">
+                        <input type="text" name="search" placeholder="search for recipes...">
+                        <button type="submit">
+                            <i class="fa fa-search search__btn"></i>
+                        </button>
                     </form>
-                    
-                     <a href="search-results" class="" role="button">
-                         <i class="fa fa-search search__btn"></i>
-                     </a> 
                 </div>
+
+
                 <ul class="nav-links">
                     <li>
                         <a href="/categories">CATEGORIES</a>
                     </li>
+
+                    {{#if user}}
+                    <li>
+                        <a href="/login">Hi, {{user.givenName}}</a>
+                    </li>
+                    {{else}}
                     <li>
                         <a href="/login">SIGN IN</a>
                     </li>
+                    {{/if}}
+
+
                 </ul>
-               
+
                 <div class="menu-icon">
                     <div class="line1"></div>
                     <div class="line2"></div>
@@ -49,7 +60,7 @@
             </nav>
 
             {{{body}}}
-           
+
         </div>
 
         <footer id="footer">
