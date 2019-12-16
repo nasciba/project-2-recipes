@@ -3,9 +3,13 @@ window.addEventListener('load', () => {
     document.querySelectorAll('.like-i').forEach(btn => {      
       
       btn.onclick = function(e) {
-        // console.log(e.currentTarget.nextElementSibling);
-        e.currentTarget.classList.toggle("press", 1000);
-        e.currentTarget.nextElementSibling.classList.toggle("press", 1000);
+        if(e.currentTarget.classList.value == 'like-i'){
+          e.currentTarget.classList.toggle("press", 1000);
+          e.currentTarget.nextElementSibling.classList.toggle("press", 1000);
+        }else{
+          e.currentTarget.classList.remove("press", 1000);
+        }
+        
         let recipeId = e.currentTarget.getAttribute('recipeId')
         console.log(recipeId);
 
@@ -18,7 +22,7 @@ window.addEventListener('load', () => {
               window.location.href = '/login';
             }
             
-      })
+        });
       }     
 
       

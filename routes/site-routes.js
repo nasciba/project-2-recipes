@@ -7,7 +7,6 @@ const RandomRecipe = require("../models/random-recipe");
 const User = require("../models/user");
 const APIHandler = require("./APIHandler");
 
-
 const recipesAPI = new APIHandler('http://localhost:8000');
 
 
@@ -18,12 +17,16 @@ router.get("/", (req, res, next) => {
 
 router.post("/favorite/:recipeId", (req, res, next) => {
 
+  //verifica se o usuário está logado
   if(req.session.passport){
     console.log("user logged");
     let recipeId = req.params.recipeId;
     console.log(recipeId);
 
-    User.find({_id: req.session.passport.user, favoriteRecipe: recipeId}).then(ans =>{      
+    //procura por usuário e suas receitas favoritadas
+    User.find({_id: req.session.passport.user, favoriteRecipe: recipeId}).then(ans =>{     
+
+      //Adiciona a receita se ela não estiver na lista de favoritas do usuário 
       if(ans.length == 0){
         User.updateOne({ _id: req.session.passport.user }, { $push: { favoriteRecipe: recipeId} })
         .then(user => {
@@ -33,6 +36,7 @@ router.post("/favorite/:recipeId", (req, res, next) => {
           console.log(error);
         });
         console.log('recipe it is not on the list');
+      //remove a receita caso ela esteja na lista de favoritas do usuário
       }else{
         User.updateOne({ _id: req.session.passport.user }, { $pull: { favoriteRecipe: recipeId} })
         .then(user => {
@@ -45,13 +49,12 @@ router.post("/favorite/:recipeId", (req, res, next) => {
       }
     }).catch(err => {
       console.log('favorite/:recipeId ', err);
-    })
-
-    
-
+    });    
+    //retorna true para confirmar que o usuário está logado
     res.send(true);
   }else{
     console.log("user not logged");
+    // retorna false para confirmar que o usuário não está logado
     res.send(false);
   }
 
@@ -308,7 +311,25 @@ router.get('/vegan', (req, res) => {
   RandomRecipe.find({ vegan: true })
     .then(recipes => {
       //console.log(recipes)
-      res.render('vegan', { recipes })
+      if(req.session.passport){
+        
+        recipes.forEach(recipe => {
+          User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+            if(ans !== null){              
+              recipe.favorite = true;              
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+        
+        res.render('vegan', { recipes })
+      }else{
+        res.render('vegan', { recipes })
+      } 
+      // res.render('vegan', { recipes })
 
     })
     .catch(error => {
@@ -321,7 +342,25 @@ router.get('/gluten-free', (req, res) => {
   RandomRecipe.find({ dairyFree: true })
     .then(recipes => {
       //console.log(recipes)
-      res.render('dairy-free', { recipes })
+      if(req.session.passport){
+        
+        recipes.forEach(recipe => {
+          User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+            if(ans !== null){              
+              recipe.favorite = true;              
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+        
+        res.render('dairy-free', { recipes })
+      }else{
+        res.render('dairy-free', { recipes })
+      } 
+      // res.render('dairy-free', { recipes })
 
     })
     .catch(error => {
@@ -338,7 +377,25 @@ router.get('/vegetarian', (req, res) => {
   RandomRecipe.find({ vegetarian: true })
     .then(recipes => {
       //console.log(recipes)
-      res.render('vegetarian', { recipes })
+      if(req.session.passport){
+        
+        recipes.forEach(recipe => {
+          User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+            if(ans !== null){              
+              recipe.favorite = true;              
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+        
+        res.render('vegetarian', { recipes })
+      }else{
+        res.render('vegetarian', { recipes })
+      }    
+      // res.render('vegetarian', { recipes })
 
     })
     .catch(error => {
@@ -350,7 +407,26 @@ router.get('/dairy-free', (req, res) => {
   RandomRecipe.find({ dairyFree: true })
     .then(recipes => {
       //console.log(recipes)
-      res.render('dairy-free', { recipes })
+      // res.render('dairy-free', { recipes })
+
+      if(req.session.passport){
+        
+        recipes.forEach(recipe => {
+          User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+            if(ans !== null){              
+              recipe.favorite = true;              
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+        
+        res.render('dairy-free', { recipes })
+      }else{
+        res.render('dairy-free', { recipes })
+      }     
 
     })
     .catch(error => {
@@ -362,7 +438,25 @@ router.get('/healthy', (req, res) => {
   RandomRecipe.find({ veryHealthy: true })
     .then(recipes => {
       //console.log(recipes)
-      res.render('healthy', { recipes })
+
+      if(req.session.passport){
+        
+        recipes.forEach(recipe => {
+          User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+            if(ans !== null){              
+              recipe.favorite = true;              
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+        
+        res.render('healthy', { recipes })
+      }else{
+        res.render('healthy', { recipes })
+      }      
 
     })
     .catch(error => {
