@@ -39,15 +39,15 @@ window.addEventListener('load', () => {
       //   document.getElementById('profile-info').classList.toggle('hidden-section');
       // })
   
-      document.getElementById('profile-info').addEventListener('mouseout', (e) =>{
-        console.log(e.currentTarget.nextElementSibling);
-        e.currentTarget.classList.toggle('hidden-section');
-      });
+      // document.getElementById('profile-info').addEventListener('mouseout', (e) =>{
+      //   console.log(e.currentTarget.nextElementSibling);
+      //   e.currentTarget.classList.toggle('hidden-section');
+      // });
 
-      document.getElementById('profile').addEventListener('mouseout', (e) =>{
-        console.log(e.currentTarget.nextElementSibling);
-        e.currentTarget.nextElementSibling.classList.toggle('hidden-section');
-      })
+      // document.getElementById('profile').addEventListener('mouseout', (e) =>{
+      //   console.log(e.currentTarget.nextElementSibling);
+      //   e.currentTarget.nextElementSibling.classList.toggle('hidden-section');
+      // })
 
       
     }
