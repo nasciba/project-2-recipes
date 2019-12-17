@@ -1,28 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Create Recipe</title>
 </head>
+
 <body>
-    
-<div id="box__create__recipe">
-<h1 class="title__categories">Create Recipe</h1>
-{{!-- <form action="GET"> --}}
-    <div id="container__create__recipes">
-        <h4>Title:</h4> 
-        <input type="text" class="inputIngredient" name="title">
-        <h4>Minutes to prepare:</h4>
-        <input type="number" class="inputIngredient" name="readyInMinutes">
-        <h4>Ingredients:</h4> 
-        <button type="submit" id="add__ingredient" class="btn__create__recipe">Add Ingredient</button>
-        <div id="container__ingredients">
-        </div>  
+
+    <div id="box__create__recipe">
+        <h1 class="title__categories">Create Recipe</h1>
+        <form action="/new-recipe" method="POST">
+            <div id="container__create__recipes">
+
+                <label for="recipe-title">Title</label>
+                <input type="text" class="inputIngredient" name="title" autocomplete="off" required>
+
+                <label for="minutes-preparation">Minutes to prepare</label>
+                <input type="number" class="inputIngredient" name="readyInMinutes" autocomplete="off" required>
+
+                <div id="container__ingredients">
+                    <label for="ingredients">Ingredients</label>
+                    <a id="add__ingredient">ADD</a>
+                </div>
+                <label for="directions__create">Directions</label>
+                <textarea id="directions" name="directions" cols="30" rows="10" autocomplete="off" required>
+                </textarea>
+
+                <button type="submit" class="btn__create__recipe">SAVE RECIPE</button>
+
+            </div>
     </div>
-</div>
-<script src="/js/createRecipe.js"></script>
-{{!-- </form> --}}
+    <script src="/js/createRecipe.js"></script>
+    </form>
 </body>
+{{!-- class="btn__create__recipe" --}}
 </html>

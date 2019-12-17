@@ -20,6 +20,10 @@ router.get("/create-recipe", (req, res, next) => {
   res.render("create-recipe", {user,   user: req.user})
 })
 
+router.post("create-recipe", (req, res, next) => {
+  
+})
+
 router.post("/favorite/:recipeId", (req, res, next) => {
 
   //verifica se o usuário está logado
