@@ -5,6 +5,7 @@ const passport = require("passport");
 const ensureLogin = require("connect-ensure-login");
 const nodemailer = require("nodemailer");
 const templates = require("../templates/template");
+const RandomRecipe = require("../models/random-recipe");
 
 
 // User model
@@ -113,7 +114,7 @@ router.get(
       req.session.user = user;
 
       console.log('request google >>',req.session);
-      res.redirect('/');
+      res.redirect('/private-page');
     })
     .catch(err => {
       console.log(err);
@@ -207,7 +208,7 @@ router.post('/login',
   function(req, res) {
     // If this function gets called, authentication was successful.
     // `req.user` contains the authenticated user.
-    res.redirect('/');
+    res.redirect('/private-page');
     
   });
 
@@ -218,7 +219,48 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
-  res.render("private", { user: req.user });
+
+  User.findById({_id: req.session.passport.user})
+    .then(usr => {      
+
+      RandomRecipe.find({ _id: {$in: usr.favoriteRecipe} })
+      .then(recipes => {
+
+        recipes.forEach(recipe => {
+          recipe.favorite = true; 
+        });
+
+        // if(req.session.passport){
+        
+        //   recipes.forEach(recipe => {
+        //     User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+        //       if(ans !== null){              
+        //         recipe.favorite = true;              
+        //       }
+              
+        //     })
+        //     .catch(err => {
+        //       console.log(err);
+        //     });
+        //   });
+          
+        //   res.render("private", { user: req.user, recipes });
+        // }else{
+        //   res.render("private", { user: req.user, recipes });
+        // } 
+        
+        res.render("private", { user: req.user, recipes });
+
+      })
+      .catch(error => {
+        console.log('/private-page User.RandomRecipe.find ', error);
+      })
+
+    })
+    .catch(error => {
+      console.log('/private-page User.findById ', error);
+    })
+  
 });
 
 

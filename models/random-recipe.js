@@ -72,7 +72,8 @@ const randomRecipeSchema = new Schema({
           type: Array
         }
       },
-      instructions: String
+      instructions: String,
+      favorite : { type: Boolean, default: false }
 }, {
   timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
 });
