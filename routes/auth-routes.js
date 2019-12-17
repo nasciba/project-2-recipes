@@ -220,7 +220,7 @@ router.post('/login', function(req, res, next) {
       req.logIn(user, function(err) {
         if (err) { return next(err); }
         console.log(user);
-        req.session.user = { givenName : user.email}
+        req.session.user = { ...user._doc, givenName : user._doc.email }
         console.log(req.session);
         return res.redirect('/private-page');
         

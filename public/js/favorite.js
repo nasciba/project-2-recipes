@@ -23,40 +23,12 @@ window.addEventListener('load', () => {
             }
             
         });
-      }     
-
-      
+      }      
     });
 
     if(document.getElementById('profile')){
-      document.getElementById('profile').addEventListener('mouseover', (e) =>{
-        // console.log('passei aqui! ', e.currentTarget);
+      document.getElementById('profile').addEventListener('mouseover', (e) =>{       
         e.currentTarget.nextElementSibling.classList.remove('hidden-section');
-      });
-
-      // document.querySelector('.cl').addEventListener('mouseout', (e) =>{
-      //   // e.currentTarget.classList.toggle('hidden-section');
-      //   document.getElementById('profile-info').classList.toggle('hidden-section');
-      // })
-  
-      // document.getElementById('profile-info').addEventListener('mouseout', (e) =>{
-      //   console.log(e.currentTarget.nextElementSibling);
-      //   e.currentTarget.classList.toggle('hidden-section');
-      // });
-
-      // document.getElementById('profile').addEventListener('mouseout', (e) =>{
-      //   console.log(e.currentTarget.nextElementSibling);
-      //   e.currentTarget.nextElementSibling.classList.toggle('hidden-section');
-      // })
-
-      
+      });      
     }
-    
-
-    // document.getElementById("like-i").addEventListener('click', function (event) {
-    //   console.log('clicado');
-    //   $( "like-i,like-span" ).toggleClass( "press", 1000 );
-    // });
-   
-
 });
