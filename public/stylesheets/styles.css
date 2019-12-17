@@ -667,13 +667,53 @@ nav {
   /* botão like */
 
   #profile-info{
-      margin-left: -175px;
-      width: 300px;
-      height: 200px;
+      margin-left: -225px;
+      width: 350px;
+      height: 120px;
       position: absolute;
+      background-color: white;
       border: 1px solid black;
+  }
+
+  #profile-info #greetings{
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 8px;
+    
+  }
+
+  #profile-info #logout{
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 3px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid black;   
+  } 
+
+  #profile-info #fav{
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 5px;
+    
+  }
+
+  #profile-info #greetings a{
+    margin-left: 3px;
+    
+  }
+
+  #profile-info #logout a{
+      font-size: 12px;
+      margin-left: 3px;
+      
+  } 
+
+  #profile-info #fav a{
+    margin-left: 3px;
+    
   }
 
   .hidden-section {
     display: none; 
   }
+

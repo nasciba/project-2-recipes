@@ -33,6 +33,11 @@ window.addEventListener('load', () => {
         // console.log('passei aqui! ', e.currentTarget);
         e.currentTarget.nextElementSibling.classList.remove('hidden-section');
       });
+
+      // document.querySelector('.cl').addEventListener('mouseout', (e) =>{
+      //   // e.currentTarget.classList.toggle('hidden-section');
+      //   document.getElementById('profile-info').classList.toggle('hidden-section');
+      // })
   
       document.getElementById('profile-info').addEventListener('mouseout', (e) =>{
         console.log(e.currentTarget.nextElementSibling);

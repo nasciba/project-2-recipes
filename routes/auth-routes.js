@@ -110,7 +110,7 @@ router.get(
 
     User.findOne({_id: req.session.passport.user})
     .then(user => {
-      console.log(user);
+      // console.log(user);
       req.session.user = user;
 
       console.log('request google >>',req.session);
@@ -203,13 +203,29 @@ router.get("auth/login", (req, res) => {
 //     failureFlash: true    
 //   }));
 
-router.post('/login',
-  passport.authenticate('local'),
-  function(req, res) {
-    // If this function gets called, authentication was successful.
-    // `req.user` contains the authenticated user.
-    res.redirect('/private-page');
+// router.post('/login',
+//   passport.authenticate('local'),
+//   function(req, res) {
+//     // If this function gets called, authentication was successful.
+//     // `req.user` contains the authenticated user.
+//     res.redirect('/private-page');
     
+//   });
+
+router.post('/login', function(req, res, next) {
+   passport.authenticate('local', function(err, user, info) {
+      if (err) { return next(err); }
+     if (!user) { return res.redirect('/login'); }
+  
+      req.logIn(user, function(err) {
+        if (err) { return next(err); }
+        console.log(user);
+        req.session.user = { givenName : user.email}
+        console.log(req.session);
+        return res.redirect('/private-page');
+        
+      });
+    })(req, res, next);
   });
 
 
@@ -219,7 +235,7 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
-
+  console.log(req.session)
   User.findById({_id: req.session.passport.user})
     .then(usr => {      
 
