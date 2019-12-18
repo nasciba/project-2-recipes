@@ -1,6 +1,15 @@
+<div id="container__private">
+    <div class="columns_private">
+        <h2>LIKED RECIPES</h2>
+        <div class="recipe__container">
+            <div class="cards-container">
+                {{#each recipes}}
+                {{> recipeCard }}
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    
+    
 
-{{#if user}}
-  <div>
-    <a href="/">Index</a>
-  </div>
-{{/if}}
+</div>
