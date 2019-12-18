@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="/js/favorite.js"></script>
     <script src="/js/dom.js"></script>
-    
+    <title>Ratatouille Recipes</title>
 </head>
 
 <body>
@@ -32,7 +32,8 @@
                             <i class="fa fa-search search__btn"></i>
                         </button>
                     </form>
-                </div>
+                </div>                
+                
 
 
                 <ul class="nav-links">
@@ -41,10 +42,24 @@
                     </li>
 
                     {{#if user}}
-                    <li>
-                        <a href="/private-page" id='profile'>PROFILE</a>
-                        <div id='profile-info' class = "cl hidden-section">
+                    <li class="dropdown">
+                        <a  id='profile' class="cl">PROFILE</a>
+                        <div id='profile-info' class = "dropdown-content">
+                            <div id="greetings">
+                                <a>Hi, {{user.givenName}}</a>
+                            </div>
+                            <div id="logout">
+                                <a href="/logout">logout</a> 
+                            </div>
 
+                            <div id="my-recipes">
+                                <a href="/my-recipes">my recipes</a> 
+                            </div>
+
+                            <div id="fav">
+                                <a href="/private-page">favorites <i class="heart"></i></a> 
+                            </div>
+                            
                         </div>
                         {{!-- <a href="/private-page">Hi, {{user.givenName}}</a> --}}
                     </li>

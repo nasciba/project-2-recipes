@@ -114,10 +114,10 @@ router.get(
 
     User.findOne({_id: req.session.passport.user})
     .then(user => {
-      console.log(user);
+      // console.log(user);
       req.session.user = user;
 
-      console.log('request google >>',req.session);
+      // console.log('request google >>',req.session);
       res.redirect('/private-page');
     })
     .catch(err => {
@@ -141,7 +141,7 @@ router.get('/auth/:confirmationToken', (req, res) => {
           { $set: { "status": "Active" } }
         )
           .then(() => {
-            console.log('E-mail confirmado, criar senha');
+            // console.log('E-mail confirmado, criar senha');
             res.render('auth/createPassword', {email: user.email, layout: false});
             return;
           })
@@ -160,7 +160,7 @@ router.get('/auth/:confirmationToken', (req, res) => {
 });
 
 router.post('/auth/createPassword', (req, res) => {
-  console.log('entrou');
+  // console.log('entrou');
   const email = req.body.email;
   const psswd = req.body.psswd;
   const confPsswd = req.body.confPsswd;
@@ -180,8 +180,8 @@ router.post('/auth/createPassword', (req, res) => {
       { $set: { "password": hashPass } }
       )
       .then(() => {
-        console.log('Senha criada');
-        res.render("auth/account-created", {layout: false});
+        // console.log('Senha criada');
+        res.render("auth/account-created");
         return;
       })
       .catch((error) => {
@@ -207,13 +207,29 @@ router.get("auth/login", (req, res) => {
 //     failureFlash: true    
 //   }));
 
-router.post('/login',
-  passport.authenticate('local'),
-  function(req, res) {
-    // If this function gets called, authentication was successful.
-    // `req.user` contains the authenticated user.
-    res.redirect('/private-page');
+// router.post('/login',
+//   passport.authenticate('local'),
+//   function(req, res) {
+//     // If this function gets called, authentication was successful.
+//     // `req.user` contains the authenticated user.
+//     res.redirect('/private-page');
     
+//   });
+
+router.post('/login', function(req, res, next) {
+   passport.authenticate('local', function(err, user, info) {
+      if (err) { return next(err); }
+     if (!user) { return res.redirect('/login'); }
+  
+      req.logIn(user, function(err) {
+        if (err) { return next(err); }
+        // console.log(user);
+        req.session.user = { givenName : user.email }
+        // console.log(req.session);
+        return res.redirect('/private-page');
+        
+      });
+    })(req, res, next);
   });
 
 
@@ -223,7 +239,7 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
-
+  // console.log(req.session)
   User.findById({_id: req.session.passport.user})
     .then(usr => {      
 
@@ -267,16 +283,56 @@ router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
   
 });
 
-router.get("/my-recipes", (req, res, next) => {
-  newRecipe.find({})
-  .then(recipes => {
-    res.render("my-recipes", { recipes, user: req.user });
-  })
-  .catch(err => {
-    console.log(err);
-  })
+// router.get("/my-recipes", ensureLogin.ensureLoggedIn(), (req, res) => {
+//   // console.log(req.session)
+//   User.findById({_id: req.session.passport.user})
+//     .then(usr => {      
+//       User.find({createRecipe})
+//       .then(recipes => {
+//         res.render("my-recipes", { recipes, user: req.user });
+//       })
+//       .catch(err => {
+//         res.render('my-recipes', console.log(err));
+//       })
+       
+
+//     })
+//     .catch(error => {
+//       console.log('/my-recipes User.findById ', error);
+//     })
   
-})
+// });  
+router.get("/my-recipes", ensureLogin.ensureLoggedIn(), (req, res) => {
+  // console.log(req.session)
+	User.findById({_id: req.session.passport.user})
+    .then(usr => {      
+
+      User.find({ _id: {$in: usr.createRecipe} })
+      .then(recipes => {         
+        
+        res.render("my-recipes", { user: req.user, recipes });
+
+      })
+      .catch(error => {
+        console.log('deu ruim ', error);
+      })
+
+    })
+    .catch(error => {
+      console.log('/deu ruim ', error);
+    })
+  
+});
+// router.get("/my-recipes", (req, res, next) => {
+//   newRecipe.find({})
+//   .then(recipes => {
+//     res.render("my-recipes", { recipes, user: req.user });
+//   })
+//   .catch(err => {
+//     console.log(err);
+//   })
+  
+// })
 
 // router.get('/my-recipes/:id', (req, res, next) => {
 //   const id = req.params.id;
@@ -292,23 +348,65 @@ router.get("/my-recipes", (req, res, next) => {
 // })
 
 
-router.get("/create-recipe", (req, res, next) => {
-  const { user } = req.session;
-  res.render("create-recipe", {user,   user: req.user})
-})
+router.get("/create-recipe", ensureLogin.ensureLoggedIn(), (req, res) => {
+  // console.log(req.session)
+  User.findById({_id: req.session.passport.user})
+    .then(usr => {      
+      newRecipe.find({})
+      .then(recipes => {
+        res.render("create-recipe", { recipes, user: req.user });
+      })
+      .catch(err => {
+        console.log('/create-recipe User.myRecipes.find ', err);
+      })
+      
+
+    })
+    .catch(error => {
+      console.log('/create-recipe User.findById ', error);
+    })
+  
+});
+
+// router.post("/create-recipe", (req, res, next) => {
+//   let recipeTitle = req.body.title;
+//   let timeToPrepare = req.body.readyInMinutes;
+//   let listOfIngredients = req.body.ingredient;
+//   let recipeDirections = req.body.directions;
+//   if(req.session.passport){
+//   newRecipe.create({title: recipeTitle, readyInMinutes: timeToPrepare, ingredients: listOfIngredients, directions:recipeDirections })
+//   .then(recipe => { console.log('The recipe is saved and its value is: ', recipe) })
+//   .catch(err => { console.log('An error happened:', err) });
+
+//   User.updateOne({ _id: req.session.passport.user }, { $push: { createRecipe: _id} })
+
+//   res.render('my-recipes')
+//   }
+//   else {
+//     res.render(res.render(my-recipes));
+//   }
+// })
 
 router.post("/create-recipe", (req, res, next) => {
   let recipeTitle = req.body.title;
   let timeToPrepare = req.body.readyInMinutes;
   let listOfIngredients = req.body.ingredient;
   let recipeDirections = req.body.directions;
-  
+  if(req.session.passport){
   newRecipe.create({title: recipeTitle, readyInMinutes: timeToPrepare, ingredients: listOfIngredients, directions:recipeDirections })
-  .then(recipe => { console.log('The recipe is saved and its value is: ', recipe) })
+  .then(recipe => { 
+		console.log('The recipe is saved and its value is: ', recipe) 
+		User.updateOne({ _id: req.session.passport.user }, { $push: { userRecipes: recipe._id} })
+		})
   .catch(err => { console.log('An error happened:', err) });
-  res.render('my-recipes')
- 
-})
 
+  
+
+  res.render('my-recipes');
+  }
+  else {
+    res.render('my-recipes');
+  }
+})
 
 module.exports = router;
