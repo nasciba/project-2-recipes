@@ -737,8 +737,13 @@ nav {
   #profile-info #fav{
     margin-left: 4px;
     margin-right: 4px;
-    margin-top: 5px;
-    
+    margin-top: 5px;    
+  }
+
+  #profile-info #my-recipes{
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-top: 5px;    
   }
 
   #profile-info #greetings a{
@@ -754,8 +759,11 @@ nav {
   } 
 
   #profile-info #fav a{
-    margin-left: 3px;
-    
+    margin-left: 3px;    
+  }
+
+  #profile-info #my-recipes a{
+    margin-left: 3px;    
   }
 
   .hidden-section {

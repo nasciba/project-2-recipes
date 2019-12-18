@@ -113,7 +113,7 @@ router.get(
       // console.log(user);
       req.session.user = user;
 
-      console.log('request google >>',req.session);
+      // console.log('request google >>',req.session);
       res.redirect('/private-page');
     })
     .catch(err => {
@@ -137,7 +137,7 @@ router.get('/auth/:confirmationToken', (req, res) => {
           { $set: { "status": "Active" } }
         )
           .then(() => {
-            console.log('E-mail confirmado, criar senha');
+            // console.log('E-mail confirmado, criar senha');
             res.render('auth/createPassword', {email: user.email, layout: false});
             return;
           })
@@ -156,7 +156,7 @@ router.get('/auth/:confirmationToken', (req, res) => {
 });
 
 router.post('/auth/createPassword', (req, res) => {
-  console.log('entrou');
+  // console.log('entrou');
   const email = req.body.email;
   const psswd = req.body.psswd;
   const confPsswd = req.body.confPsswd;
@@ -176,7 +176,7 @@ router.post('/auth/createPassword', (req, res) => {
       { $set: { "password": hashPass } }
       )
       .then(() => {
-        console.log('Senha criada');
+        // console.log('Senha criada');
         res.render("auth/account-created", {layout: false});
         return;
       })
@@ -219,9 +219,9 @@ router.post('/login', function(req, res, next) {
   
       req.logIn(user, function(err) {
         if (err) { return next(err); }
-        console.log(user);
+        // console.log(user);
         req.session.user = { givenName : user.email }
-        console.log(req.session);
+        // console.log(req.session);
         return res.redirect('/private-page');
         
       });
@@ -235,7 +235,7 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
-  console.log(req.session)
+  // console.log(req.session)
   User.findById({_id: req.session.passport.user})
     .then(usr => {      
 
