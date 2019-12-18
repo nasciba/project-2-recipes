@@ -5,8 +5,12 @@ const passport = require("passport");
 const ensureLogin = require("connect-ensure-login");
 const nodemailer = require("nodemailer");
 const templates = require("../templates/template");
+
+//recipes model
 const RandomRecipe = require("../models/random-recipe");
 
+//createRecipe model
+const newRecipe = require("../models/createRecipe")
 
 // User model
 const User = require("../models/user");
@@ -65,15 +69,15 @@ router.post("/signup", (req, res, next) => {
           }
         });
 
-        let message = 'Seja bem vindo, favor confirme o seu cadastro clicando';
-        let subject = 'Confirmação de cadastro';
+        let message = 'Welcome to Ratatouille Recipes, click here to confirm your registration';
+        let subject = 'Ratatouille Recipes 🥗 Registration';
 
         transporter.sendMail({
-          from: '"Receitinhas Ratatouille 🥗🍣🥙" <ratatouillereceitas@gmail.com>',
+          from: '"Ratatouille Recipes 🥗🍣🥙" <ratatouillereceitas@gmail.com>',
           to: email,
           subject: subject,
           text: message,
-          html: `<b>${message} <a href="${process.env.EMAIL_RESPONSE}/auth/${token}">aqui</a></b>`
+          html: `<b>${message} <a href="${process.env.EMAIL_RESPONSE}/auth/${token}">here</a></b>`
           
         })
           .then()
@@ -263,7 +267,48 @@ router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
   
 });
 
+router.get("/my-recipes", (req, res, next) => {
+  newRecipe.find({})
+  .then(recipes => {
+    res.render("my-recipes", { recipes, user: req.user });
+  })
+  .catch(err => {
+    console.log(err);
+  })
+  
+})
 
+// router.get('/my-recipes/:id', (req, res, next) => {
+//   const id = req.params.id;
+//   newRecipe.findById(id)
+//     .then(recipe => {
+//       console.log(recipe),
+//       res.render("my-recipe-each", { recipe, user: req.user })
+     
+//     })
+//     .catch(error => {
+//       console.log(error);
+//     })
+// })
+
+
+router.get("/create-recipe", (req, res, next) => {
+  const { user } = req.session;
+  res.render("create-recipe", {user,   user: req.user})
+})
+
+router.post("/create-recipe", (req, res, next) => {
+  let recipeTitle = req.body.title;
+  let timeToPrepare = req.body.readyInMinutes;
+  let listOfIngredients = req.body.ingredient;
+  let recipeDirections = req.body.directions;
+  
+  newRecipe.create({title: recipeTitle, readyInMinutes: timeToPrepare, ingredients: listOfIngredients, directions:recipeDirections })
+  .then(recipe => { console.log('The recipe is saved and its value is: ', recipe) })
+  .catch(err => { console.log('An error happened:', err) });
+  res.render('my-recipes')
+ 
+})
 
 
 module.exports = router;
