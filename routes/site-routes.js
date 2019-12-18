@@ -83,7 +83,7 @@ router.post("/favorite/:recipeId", (req, res, next) => {
 
 router.get("/recipes-api", /*ensureLogin.ensureLoggedIn(),*/(req, res) => {
 
-  let numberOfRecipes = 2;
+  let numberOfRecipes = 300;
 
   axios({
     "method": "GET",
