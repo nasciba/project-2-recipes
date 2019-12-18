@@ -12,8 +12,17 @@ const recipesAPI = new APIHandler('http://localhost:8000');
 
 router.get("/", (req, res, next) => {
   const { user } = req.session;
-  res.render("home", { user });
+  res.render("home", { user,   user: req.user });
 });
+
+router.get("/create-recipe", (req, res, next) => {
+  const { user } = req.session;
+  res.render("create-recipe", {user,   user: req.user})
+})
+
+router.post("create-recipe", (req, res, next) => {
+  
+})
 
 router.post("/favorite/:recipeId", (req, res, next) => {
 
@@ -339,7 +348,7 @@ router.get('/vegan', (req, res) => {
 })
 
 router.get('/gluten-free', (req, res) => {
-  RandomRecipe.find({ dairyFree: true })
+  RandomRecipe.find({ glutenFree: true })
     .then(recipes => {
       //console.log(recipes)
       if(req.session.passport){
@@ -356,9 +365,9 @@ router.get('/gluten-free', (req, res) => {
           });
         });
         
-        res.render('dairy-free', { recipes, user: req.user })
+        res.render('gluten-free', { recipes, user: req.user })
       }else{
-        res.render('dairy-free', { recipes, user: req.user })
+        res.render('gluten-free', { recipes, user: req.user })
       } 
       // res.render('dairy-free', { recipes })
 
@@ -369,8 +378,16 @@ router.get('/gluten-free', (req, res) => {
 })
 
 router.get('/desserts', (req, res) => {
-  res.render('desserts',  {user: req.user}//{inserir objeto receitas desserts}
-  )
+  RandomRecipe.find({ $text: { $search: "chocolate jam pudding cake pie cookie oreo  brownie ice cream popsicle muffin biscuit" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('desserts', { recipes, user: req.user })
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  // res.render('desserts',  {user: req.user}//{inserir objeto receitas desserts})
+  
 })
 
 router.get('/vegetarian', (req, res) => {
@@ -464,4 +481,60 @@ router.get('/healthy', (req, res) => {
     })
 })
 
+// { field: { $in: [<value1>, <value2>, ... <valueN> ] } }
+router.get('/salads', (req, res) => {
+  RandomRecipe.find({ $text: { $search: "salad" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('salad', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+})
+router.get('/pasta', (req, res) => {
+  RandomRecipe.find({ $text: { $search: "pasta macaroni spaghetti noodles" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('pasta', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+})
+router.get('/meat', (req, res) => {
+  RandomRecipe.find({ $text: { $search: "meat beef bacon steak turkey ham chicken pork branzino squid seafood shrimp fish salmon" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('meat', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+})
+router.get('/soups', (req, res) => {
+  RandomRecipe.find({ $text: { $search: "soup" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('soups', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+})
+router.get('/drinks', (req, res) => {
+  RandomRecipe.find({ $text: { $search: "smoothie juice cocktail" } })
+    .then(recipes => {
+      console.log(recipes)
+      res.render('drinks', { recipes })
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+})
 module.exports = router;
