@@ -3,16 +3,12 @@ const express = require("express");
 const router = express.Router();
 const ensureLogin = require("connect-ensure-login");
 const axios = require("axios");
-<<<<<<< HEAD
-const APIHandler = require("./APIHandler");
-=======
 const RandomRecipe = require("../models/random-recipe");
 const User = require("../models/user");
 const APIHandler = require("./APIHandler");
 const newRecipe = require("../models/createRecipe")
 
 
->>>>>>> 3263842cc2f07b9ccefe86d72ad838c0afaa46c6
 const recipesAPI = new APIHandler('http://localhost:8000');
 
 
