@@ -200,21 +200,21 @@ router.get("auth/login", (req, res) => {
   res.render("auth/login",  { "message": req.flash("error"), layout : false });
 })
 
-// router.post("/login",
-//   passport.authenticate("local", {
-//     successRedirect: "/",
-//     failureRedirect: "/login",
-//     failureFlash: true    
-//   }));
+router.post("/login",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/login",
+    failureFlash: true    
+  }));
 
-// router.post('/login',
-//   passport.authenticate('local'),
-//   function(req, res) {
-//     // If this function gets called, authentication was successful.
-//     // `req.user` contains the authenticated user.
-//     res.redirect('/private-page');
+router.post('/login',
+  passport.authenticate('local'),
+  function(req, res) {
+    // If this function gets called, authentication was successful.
+    // `req.user` contains the authenticated user.
+    res.redirect('/private-page');
     
-//   });
+  });
 
 router.post('/login', function(req, res, next) {
    passport.authenticate('local', function(err, user, info) {
@@ -250,24 +250,24 @@ router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
           recipe.favorite = true; 
         });
 
-        // if(req.session.passport){
+        if(req.session.passport){
         
-        //   recipes.forEach(recipe => {
-        //     User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
-        //       if(ans !== null){              
-        //         recipe.favorite = true;              
-        //       }
+          recipes.forEach(recipe => {
+            User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+              if(ans !== null){              
+                recipe.favorite = true;              
+              }
               
-        //     })
-        //     .catch(err => {
-        //       console.log(err);
-        //     });
-        //   });
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          });
           
-        //   res.render("private", { user: req.user, recipes });
-        // }else{
-        //   res.render("private", { user: req.user, recipes });
-        // } 
+          res.render("private", { user: req.user, recipes });
+        }else{
+          res.render("private", { user: req.user, recipes });
+        } 
         
         res.render("private", { user: req.user, recipes });
 
@@ -302,37 +302,37 @@ router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
 //     })
   
 // });  
-router.get("/my-recipes", ensureLogin.ensureLoggedIn(), (req, res) => {
-  // console.log(req.session)
-	User.findById({_id: req.session.passport.user})
-    .then(usr => {      
+// router.get("/my-recipes", ensureLogin.ensureLoggedIn(), (req, res) => {
+//   // console.log(req.session)
+// 	User.findById({_id: req.session.passport.user})
+//     .then(usr => {      
 
-      User.find({ _id: {$in: usr.createRecipe} })
-      .then(recipes => {         
+//       User.find({ _id: {$in: usr.createRecipe} })
+//       .then(recipes => {         
         
-        res.render("my-recipes", { user: req.user, recipes });
+//         res.render("my-recipes", { user: req.user, recipes });
 
-      })
-      .catch(error => {
-        console.log('deu ruim ', error);
-      })
+//       })
+//       .catch(error => {
+//         console.log('deu ruim ', error);
+//       })
 
-    })
-    .catch(error => {
-      console.log('/deu ruim ', error);
-    })
+//     })
+//     .catch(error => {
+//       console.log('/deu ruim ', error);
+//     })
   
-});
-// router.get("/my-recipes", (req, res, next) => {
-//   newRecipe.find({})
-//   .then(recipes => {
-//     res.render("my-recipes", { recipes, user: req.user });
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   })
+// });
+router.get("/my-recipes", (req, res, next) => {
+  newRecipe.find({})
+  .then(recipes => {
+    res.render("my-recipes", { recipes, user: req.user });
+  })
+  .catch(err => {
+    console.log(err);
+  })
   
-// })
+})
 
 // router.get('/my-recipes/:id', (req, res, next) => {
 //   const id = req.params.id;
