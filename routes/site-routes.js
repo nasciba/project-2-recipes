@@ -6,6 +6,8 @@ const axios = require("axios");
 const RandomRecipe = require("../models/random-recipe");
 const User = require("../models/user");
 const APIHandler = require("./APIHandler");
+const newRecipe = require("../models/createRecipe")
+
 
 const recipesAPI = new APIHandler('http://localhost:8000');
 
@@ -20,8 +22,17 @@ router.get("/create-recipe", (req, res, next) => {
   res.render("create-recipe", {user,   user: req.user})
 })
 
-router.post("create-recipe", (req, res, next) => {
+router.post("/create-recipe", (req, res, next) => {
+  let recipeTitle = req.body.title;
+  let timeToPrepare = req.body.readyInMinutes;
+  let listOfIngredients = req.body.ingredient;
+  let recipeDirections = req.body.directions;
   
+  newRecipe.create({title: recipeTitle, readyInMinutes: timeToPrepare, ingredients: listOfIngredients, directions:recipeDirections })
+  .then(recipe => { console.log('The recipe is saved and its value is: ', recipe) })
+  .catch(err => { console.log('An error happened:', err) });
+  res.render('/')
+ 
 })
 
 router.post("/favorite/:recipeId", (req, res, next) => {

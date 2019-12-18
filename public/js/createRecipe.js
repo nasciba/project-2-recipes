@@ -3,13 +3,14 @@ let containerIngredients = document.getElementById('container__ingredients');
 
 
 const addInput = () => {
+    let counter = 0;
     let divIngredient = document.createElement("div")
     divIngredient.className = "each__ingredient"
     containerIngredients.appendChild(divIngredient);
     let inputIngredient = document.createElement("input");
     inputIngredient.className = "inputIngredient";
     inputIngredient.type = "text";
-    inputIngredient.name = "ingredient";
+    inputIngredient.name = "ingredient[]";
     inputIngredient.placeholder ="insert quantity and name of the ingredient"
     divIngredient.appendChild(inputIngredient);
     let removeIngredientBtn = document.createElement("button")
