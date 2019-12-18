@@ -1,23 +1,27 @@
-<div class="w3-content w3-section" style="max-width:500px">
-  <img class="mySlides w3-animate-top" src="/images/casserole.jpg" style="width:100%">
-  <img class="mySlides w3-animate-bottom" src="/images/orange.jpg" style="width:100%">
-  <img class="mySlides w3-animate-top" src="/images/salad.jpg" style="width:100%">
-  <img class="mySlides w3-animate-bottom" src="/images/salad.jpg" style="width:100%">
+
+<div class="w3-content w3-section">
+    <img class="mySlides w3-animate-bottom" src="/images/orange.jpg">
+    <img class="mySlides w3-animate-top" src="/images/casserole.jpg">
+    <img class="mySlides w3-animate-top" src="/images/salad.jpg">
+    <img class="mySlides w3-animate-bottom" src="/images/olive.jpg">
 </div>
 
-<header class="header">
-    <div class="header__align">
+
+{{!-- <header class="header">
+    <div class="header__align"> --}}
+
         {{!-- <form action="/busca" method="GET">
             <input class="form" type="text" name="busca">
         </form>
         <a href="search-results" class="btn-search" role="button">GO</a> --}}
-    </div>
-</header>
+
+    {{!-- </div>
+</header> --}}
 
 <div class="home__categories">
 
     <div class="recipes__container">
-        <h3>Most viewed - {{user.givenName}}</h3>
+        <h3>Most viewed</h3>
         <div class="align__cards__recip">
             <div class="cards__recip">
                 <!-- create dynamic view most viewed -->
