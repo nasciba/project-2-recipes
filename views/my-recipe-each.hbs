@@ -1,0 +1,16 @@
+<div class="recipe__container">
+    {{#each recipe}}
+    
+  <div id="header__recipes">
+        
+        <div id="text__header" class="width_header">
+            <h2 style="color: #4EBFC2;" class="title__recipes">{{this.title}} </h2>
+            <div id="recipe__ready">
+                <p>Ready in</p>
+                <p>{{this.readyInMinutes}} minutes <i class='fa fa-hourglass-start'></i></p>
+            </div>
+        </div>
+  
+    {{/each}}
+</div>
+</div>
