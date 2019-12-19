@@ -9,9 +9,6 @@ const templates = require("../templates/template");
 //recipes model
 const RandomRecipe = require("../models/random-recipe");
 
-//createRecipe model
-const newRecipe = require("../models/createRecipe")
-
 // User model
 const User = require("../models/user");
 
@@ -267,9 +264,7 @@ router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
           res.render("private", { user: req.user, recipes });
         }else{
           res.render("private", { user: req.user, recipes });
-        } 
-        
-        res.render("private", { user: req.user, recipes });
+        }
 
       })
       .catch(error => {
@@ -282,131 +277,5 @@ router.get("/private-page", ensureLogin.ensureLoggedIn(), (req, res) => {
     })
   
 });
-
-// router.get("/my-recipes", ensureLogin.ensureLoggedIn(), (req, res) => {
-//   // console.log(req.session)
-//   User.findById({_id: req.session.passport.user})
-//     .then(usr => {      
-//       User.find({createRecipe})
-//       .then(recipes => {
-//         res.render("my-recipes", { recipes, user: req.user });
-//       })
-//       .catch(err => {
-//         res.render('my-recipes', console.log(err));
-//       })
-       
-
-//     })
-//     .catch(error => {
-//       console.log('/my-recipes User.findById ', error);
-//     })
-  
-// });  
-// router.get("/my-recipes", ensureLogin.ensureLoggedIn(), (req, res) => {
-//   // console.log(req.session)
-// 	User.findById({_id: req.session.passport.user})
-//     .then(usr => {      
-
-//       User.find({ _id: {$in: usr.createRecipe} })
-//       .then(recipes => {         
-        
-//         res.render("my-recipes", { user: req.user, recipes });
-
-//       })
-//       .catch(error => {
-//         console.log('deu ruim ', error);
-//       })
-
-//     })
-//     .catch(error => {
-//       console.log('/deu ruim ', error);
-//     })
-  
-// });
-router.get("/my-recipes", (req, res, next) => {
-  newRecipe.find({})
-  .then(recipes => {
-    res.render("my-recipes", { recipes, user: req.user });
-  })
-  .catch(err => {
-    console.log(err);
-  })
-  
-})
-
-// router.get('/my-recipes/:id', (req, res, next) => {
-//   const id = req.params.id;
-//   newRecipe.findById(id)
-//     .then(recipe => {
-//       console.log(recipe),
-//       res.render("my-recipe-each", { recipe, user: req.user })
-     
-//     })
-//     .catch(error => {
-//       console.log(error);
-//     })
-// })
-
-
-router.get("/create-recipe", ensureLogin.ensureLoggedIn(), (req, res) => {
-  // console.log(req.session)
-  User.findById({_id: req.session.passport.user})
-    .then(usr => {      
-      newRecipe.find({})
-      .then(recipes => {
-        res.render("create-recipe", { recipes, user: req.user });
-      })
-      .catch(err => {
-        console.log('/create-recipe User.myRecipes.find ', err);
-      })
-      
-
-    })
-    .catch(error => {
-      console.log('/create-recipe User.findById ', error);
-    })
-  
-});
-
-// router.post("/create-recipe", (req, res, next) => {
-//   let recipeTitle = req.body.title;
-//   let timeToPrepare = req.body.readyInMinutes;
-//   let listOfIngredients = req.body.ingredient;
-//   let recipeDirections = req.body.directions;
-//   if(req.session.passport){
-//   newRecipe.create({title: recipeTitle, readyInMinutes: timeToPrepare, ingredients: listOfIngredients, directions:recipeDirections })
-//   .then(recipe => { console.log('The recipe is saved and its value is: ', recipe) })
-//   .catch(err => { console.log('An error happened:', err) });
-
-//   User.updateOne({ _id: req.session.passport.user }, { $push: { createRecipe: _id} })
-
-//   res.render('my-recipes')
-//   }
-//   else {
-//     res.render(res.render(my-recipes));
-//   }
-// })
-
-router.post("/create-recipe", (req, res, next) => {
-  let recipeTitle = req.body.title;
-  let timeToPrepare = req.body.readyInMinutes;
-  let listOfIngredients = req.body.ingredient;
-  let recipeDirections = req.body.directions;
-  if(req.session.passport){
-  newRecipe.create({title: recipeTitle, readyInMinutes: timeToPrepare, ingredients: listOfIngredients, directions:recipeDirections })
-  .then(recipe => { 
-		console.log('The recipe is saved and its value is: ', recipe) 
-		User.updateOne({ _id: req.session.passport.user }, { $push: { userRecipes: recipe._id} })
-		})
-  .catch(err => { console.log('An error happened:', err) });
-
-  
-
-  res.render('my-recipes');
-  }
-  else {
-    res.render('my-recipes');
-  }
-})
 
 module.exports = router;
