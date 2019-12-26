@@ -66,16 +66,20 @@ router.post("/signup", (req, res, next) => {
           }
         });
 
-        let message = 'Welcome to Ratatouille Recipes, click here to confirm your registration';
+        // let message = 'Welcome to Ratatouille Recipes, click here to confirm your registration';
+        // let msg = `Welcome to Ratatouille Recipes, click <a href="${process.env.EMAIL_RESPONSE}/auth/${token}">here</a> to confirm your registration`;
+        let msg = `${process.env.EMAIL_RESPONSE}/auth/${token}`;
+        let message = templates(msg);
+        
         let subject = 'Ratatouille Recipes 🥗 Registration';
 
         transporter.sendMail({
           from: '"Ratatouille Recipes 🥗🍣🥙" <ratatouillereceitas@gmail.com>',
           to: email,
           subject: subject,
-          text: message,
-          html: `<b>${message} <a href="${process.env.EMAIL_RESPONSE}/auth/${token}">here</a></b>`
-          
+          text: message.html,
+          // html: `<b>${message} <a href="${process.env.EMAIL_RESPONSE}/auth/${token}">here</a></b>`
+          html: message.html
         })
           .then()
           .catch(error => console.log(error));
@@ -108,13 +112,13 @@ router.get(
     }    
   ),
   function(req, res) {
-
+    console.log(req.session.passport.user);
     User.findOne({_id: req.session.passport.user})
     .then(user => {
       // console.log(user);
       req.session.user = user;
 
-      // console.log('request google >>',req.session);
+      console.log('request google >>',req.session);
       res.redirect('/private-page');
     })
     .catch(err => {
@@ -163,8 +167,9 @@ router.post('/auth/createPassword', (req, res) => {
   const confPsswd = req.body.confPsswd;
   if (psswd == "" || confPsswd == "") {
     res.render('auth/createPassword', {
-        message: "Preencha a senha para continuar",
-        email: email
+        message: "create a password to register",
+        email: email,
+        layout:false
     });
     return;
   }
@@ -174,7 +179,7 @@ router.post('/auth/createPassword', (req, res) => {
     const hashPass = bcrypt.hashSync(psswd, salt);
     User.updateOne(
       {"email": email},
-      { $set: { "password": hashPass } }
+      { $set: { "password": hashPass, "givenName": email } }
       )
       .then(() => {
         // console.log('Senha criada');
@@ -184,6 +189,14 @@ router.post('/auth/createPassword', (req, res) => {
       .catch((error) => {
         console.log("falha ao criar a senha", {layout: false});
       })
+  }else{
+    res.render('auth/createPassword', {
+      message: "Passwords don't match",
+      email: email,
+      layout:false
+  });
+  return;
+
   }
   
 })
@@ -197,32 +210,53 @@ router.get("auth/login", (req, res) => {
   res.render("auth/login",  { "message": req.flash("error"), layout : false });
 })
 
-router.post("/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true    
-  }));
+// router.post("/login",
+//   passport.authenticate("local", {
+//     successRedirect: "/",
+//     failureRedirect: "/login",
+//     failureFlash: true    
+//   }));
 
-router.post('/login',
-  passport.authenticate('local'),
-  function(req, res) {
-    // If this function gets called, authentication was successful.
-    // `req.user` contains the authenticated user.
-    res.redirect('/private-page');
+// router.post('/login',
+//   passport.authenticate('local'),
+//   function(req, res) {
+//     // If this function gets called, authentication was successful.
+//     // `req.user` contains the authenticated user.
+//     res.redirect('/private-page');
     
-  });
+//   });
 
 router.post('/login', function(req, res, next) {
    passport.authenticate('local', function(err, user, info) {
       if (err) { return next(err); }
-     if (!user) { return res.redirect('/login'); }
-  
+    //  if (!user) { return res.redirect('/login'); }
+    
+    const email = req.body.email;
+    const psswd = req.body.password;
+
+    if (email == "" || psswd == "") {
+      res.render('auth/login', {
+          message: "Indicate email and password to log in",
+          email: email,
+          layout:false
+      });
+      return;
+    }
+
+
       req.logIn(user, function(err) {
-        if (err) { return next(err); }
-        // console.log(user);
-        req.session.user = { givenName : user.email }
+        if (err) { res.render('auth/login', {
+          message: "Incorret email or password",
+          email: email,
+          layout:false
+        });
+      return; }
+        console.log(user);
+        // console.log(req.session.passport);
+
+        req.session.user = user;
         // console.log(req.session);
+      
         return res.redirect('/private-page');
         
       });

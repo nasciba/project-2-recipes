@@ -24,6 +24,8 @@ const randomRecipeSchema = new Schema({
         format:"uri"
         },
       aggregateLikes: Number,
+      aggregateViews: Number,
+      aggregateShares: Number,
       spoonacularScore: Number,
       healthScore: Number,
       creditsText: String,

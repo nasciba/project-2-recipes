@@ -13,7 +13,37 @@ const recipesAPI = new APIHandler('http://localhost:8000');
 
 
 router.get("/", (req, res, next) => {
+  let recipesList = [];
   const { user } = req.session;
+  // console.log(req.session);
+
+  // RandomRecipe.find({}).limit(20).then(recipes => {
+  //   recipes.forEach(rec => {
+  //     console.log(rec._id);
+  //     RandomRecipe.updateOne({_id: rec._id}, 
+  //       {$set : {aggregateShares : Math.floor(Math.random() * 100), aggregateViews : Math.floor(Math.random() * 100)}}).then(()=>{console.log('sucesso')})
+  //       .catch(err => {console.log(err)});
+  //   })
+  // })
+
+
+
+  RandomRecipe.find({}).sort({aggregateLikes: -1}).limit(3).then(recipes => {
+    recipes.forEach(rec => {
+      console.log(rec._id);
+      recipesList.push(rec._id);
+      console.log(recipesList);
+    });  
+
+  }).catch(err => {
+    console.log(err);
+  });
+
+  RandomRecipe.find({_id : {$in: recipesList}}).then(recipes =>{
+    recipes.forEach(rec => {console.log(rec.title, ' - ', rec.aggregateLikes)});
+  }).catch(); 
+
+  
 
   RandomRecipe.find({ $text: { $search: "pasta salad soup macaroni spaghetti noodles" } }).limit(9)
     .then(recipes => {
@@ -34,8 +64,8 @@ router.get("/", (req, res, next) => {
 router.post("/favorite/:recipeId", (req, res, next) => {
 
   //verifica se o usuário está logado
-  if(req.session.passport){
-    // console.log("user logged");
+  if(req.user){
+    
     let recipeId = req.params.recipeId;
     // console.log(recipeId);
 
@@ -69,7 +99,7 @@ router.post("/favorite/:recipeId", (req, res, next) => {
     //retorna true para confirmar que o usuário está logado
     res.send(true);
   }else{
-    // console.log("user not logged");
+    console.log("user not logged");
     // retorna false para confirmar que o usuário não está logado
     res.send(false);
   } 
@@ -181,46 +211,6 @@ router.get("/recipes-api", /*ensureLogin.ensureLoggedIn(),*/(req, res) => {
 
 });
 
-
-// router.get("/favorite", (req, res, next) => {
-
-//   User.update({ email: 'mcnvrodrigues@gmail.com' }, { $push: { favoriteRecipe: "5debd0d466b3942449667fb1" } })
-//     .then(user => {
-//       res.send({ user });
-//     })
-//     .catch(error => {
-//       console.log(error);
-//     });
-
-// });
-
-// router.get("/favorites", (req, res, next) => {
-
-//   RandomRecipe.find({ _id: "5debd0d466b3942449667fb1" })
-//     .then(recipes => {
-//       res.render("recipes", { recipes });
-//       //console.log(recipes.title);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-
-//   console.log('session >>', req.session.passport.user);
-//   User.findOne({ _id: req.session.passport.user })
-//     .then(user => {
-//       console.log(user);
-//       // req.session.passport.givenName = user.givenName;
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     })
-
-//   console.log('session >>', req.session);
-
-// });
-
-
-
 router.get("/receitas", /*ensureLogin.ensureLoggedIn(),*/(req, res) => {
 
 
@@ -299,96 +289,6 @@ router.get("/receitas", /*ensureLogin.ensureLoggedIn(),*/(req, res) => {
   // res.render("receitas", {recipes});
 
 });
-
-// router.get("/recipes", (req, res) => {
-
-//   // faz uma requisição para a API e verifica se a receita retornada
-//   // não existe no banco
-//   recipesAPI.getFullList()
-//     .then(responseFromApi => {
-
-//       responseFromApi.data.forEach(recipe => {
-
-//         // titulo da receita vinda da API
-//         let titleRecipe = recipe.title;
-
-//         // procura receita no banco pelo titulo
-//         RandomRecipe.findOne({ 'title': titleRecipe })
-//           .then(rec => {
-
-//             // se a receita não existe no banco, ela é inserida
-//             if (rec == null) {
-
-//               console.log('A receita ' + titleRecipe + ' nao existe!')
-//               const newRandomRecipe =
-//                 new RandomRecipe({
-//                   vegetarian: recipe.vegetarian,
-//                   vegan: recipe.vegan,
-//                   glutenFree: recipe.glutenFree,
-//                   dairyFree: recipe.dairyFree,
-//                   veryHealthy: recipe.veryHealthy,
-//                   cheap: recipe.cheap,
-//                   veryPopular: recipe.veryPopular,
-//                   sustainable: recipe.sustainable,
-//                   weightWatcherSmartPoints: recipe.weightWatcherSmartPoints,
-//                   gaps: recipe.gaps,
-//                   lowFodmap: recipe.lowFodmap,
-//                   ketogenic: recipe.ketogenic,
-//                   whole30: recipe.whole30,
-//                   sourceUrl: recipe.sourceUrl,
-//                   spoonacularSourceUrl: recipe.spoonacularSourceUrl,
-//                   aggregateLikes: recipe.aggregateLikes,
-//                   spoonacularScore: recipe.spoonacularScore,
-//                   healthScore: recipe.healthScore,
-//                   creditsText: recipe.creditsText,
-//                   sourceName: recipe.sourceName,
-//                   pricePerServing: recipe.pricePerServing,
-//                   extendedIngredients: recipe.extendedIngredients,
-//                   id: recipe.id,
-//                   title: recipe.title,
-//                   readyInMinutes: recipe.readyInMinutes,
-//                   servings: recipe.servings,
-//                   image: recipe.image,
-//                   imageType: recipe.imageType,
-//                   cuisines: recipe.cuisines,
-//                   dishTypes: recipe.dishTypes,
-//                   diets: recipe.diets,
-//                   occasions: recipe.occasions,
-//                   winePairing: recipe.winePairing,
-//                   instructions: recipe.instructions
-//                 });
-
-//               newRandomRecipe.save((err) => {
-//                 if (err) {
-//                   console.log('erro ao salvar as receitas no banco!', err);
-//                 } else {
-//                   // console.log('Sucesso as salvar as receitas no banco!');
-//                 }
-//               });
-
-//             } else {
-//               // console.log('receita ' + titleRecipe + ' já existe!');
-//             }
-//           })
-//           .catch(err => {
-//             console.log(err);
-//           });
-//       });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-
-//   //retorna todas receitas do banco
-//   RandomRecipe.find({})
-//     .then(recipes => {
-//       res.render("recipes", { recipes, user: req.user });
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     })
-
-// });
 
 router.get("/searchResults", (req, res) => {
   const querySearch = req.query.search;
@@ -494,7 +394,24 @@ router.get('/desserts', (req, res) => {
   RandomRecipe.find({ $text: { $search: "chocolate jam pudding cake pie cookie oreo  brownie ice cream popsicle muffin biscuit" } })
     .then(recipes => {
       // console.log(recipes)
-      res.render('desserts', { recipes, user: req.user })
+      if(req.session.passport){
+        
+        recipes.forEach(recipe => {
+          User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+            if(ans !== null){              
+              recipe.favorite = true;              
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+        
+        res.render('desserts', { recipes, user: req.user })
+      }else{
+        res.render('desserts', { recipes, user: req.user })
+      }       
     })
     .catch(error => {
       console.log(error);
@@ -599,7 +516,24 @@ router.get('/salads', (req, res) => {
   RandomRecipe.find({ $text: { $search: "salad" } })
     .then(recipes => {
       // console.log(recipes)
-      res.render('salad', { recipes })
+      if(req.session.passport){
+        
+        recipes.forEach(recipe => {
+          User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+            if(ans !== null){              
+              recipe.favorite = true;              
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+        
+        res.render('salad', { recipes, user: req.user })
+      }else{
+        res.render('salad', { recipes, user: req.user })
+      } 
 
     })
     .catch(error => {
@@ -610,7 +544,24 @@ router.get('/pasta', (req, res) => {
   RandomRecipe.find({ $text: { $search: "pasta macaroni spaghetti noodles" } })
     .then(recipes => {
       // console.log(recipes)
-      res.render('pasta', { recipes })
+      if(req.session.passport){
+        
+        recipes.forEach(recipe => {
+          User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+            if(ans !== null){              
+              recipe.favorite = true;              
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+        
+        res.render('pasta', { recipes, user: req.user })
+      }else{
+        res.render('pasta', { recipes, user: req.user })
+      }    
 
     })
     .catch(error => {
@@ -621,7 +572,24 @@ router.get('/meat', (req, res) => {
   RandomRecipe.find({ $text: { $search: "meat beef bacon steak turkey ham chicken pork branzino squid seafood shrimp fish salmon" } })
     .then(recipes => {
       // console.log(recipes)
-      res.render('meat', { recipes })
+      if(req.session.passport){
+        
+        recipes.forEach(recipe => {
+          User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+            if(ans !== null){              
+              recipe.favorite = true;              
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+        
+        res.render('meat', { recipes, user: req.user })
+      }else{
+        res.render('meat', { recipes, user: req.user })
+      } 
 
     })
     .catch(error => {
@@ -632,7 +600,24 @@ router.get('/soups', (req, res) => {
   RandomRecipe.find({ $text: { $search: "soup" } })
     .then(recipes => {
       // console.log(recipes)
-      res.render('soups', { recipes })
+      if(req.session.passport){
+        
+        recipes.forEach(recipe => {
+          User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+            if(ans !== null){              
+              recipe.favorite = true;              
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+        
+        res.render('soups', { recipes, user: req.user })
+      }else{
+        res.render('soups', { recipes, user: req.user })
+      }
 
     })
     .catch(error => {
@@ -643,8 +628,24 @@ router.get('/drinks', (req, res) => {
   RandomRecipe.find({ $text: { $search: "smoothie juice cocktail" } })
     .then(recipes => {
       // console.log(recipes)
-      res.render('drinks', { recipes })
-
+      if(req.session.passport){
+        
+        recipes.forEach(recipe => {
+          User.findOne({_id: req.session.passport.user, favoriteRecipe: recipe._id}).then(ans =>{
+            if(ans !== null){              
+              recipe.favorite = true;              
+            }
+            
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+        
+        res.render('drinks', { recipes, user: req.user })
+      }else{
+        res.render('drinks', { recipes, user: req.user })
+      } 
     })
     .catch(error => {
       console.log(error);
@@ -675,21 +676,23 @@ router.get("/my-recipes", ensureLogin.ensureLoggedIn(), (req, res) => {
 });
 
 router.get("/create-recipe", ensureLogin.ensureLoggedIn(), (req, res) => {
-  // console.log(req.session)
-  User.findById({_id: req.session.passport.user})
+
+    User.findById({_id: req.session.passport.user})
     .then(usr => {      
-      newRecipe.find({})
-      .then(recipes => {
-        res.render("create-recipe", { recipes, user: req.user });
+
+      newRecipe.find({ _id: {$in: usr.userRecipes} })
+      .then(recipes => {         
+        
+        res.render("create-recipe", { user: req.user, recipes });
+
       })
-      .catch(err => {
-        console.log('create-recipe User.myRecipes.find ', err);
+      .catch(error => {
+        console.log('/create-recipe newRecipe', error);
       })
-      
 
     })
     .catch(error => {
-      console.log('create-recipe User.findById ', error);
+      console.log('/create-recipe findById ', error);
     })
   
 });
@@ -711,7 +714,26 @@ router.post("/create-recipe", (req, res, next) => {
 		})
   .catch(err => { console.log('An error happened:', err) }); 
   
-  res.render('my-recipes');
+  User.findById({_id: req.session.passport.user})
+    .then(usr => {      
+
+      newRecipe.find({ _id: {$in: usr.userRecipes} })
+      .then(recipes => {         
+        
+        res.render("my-recipes", { user: req.user, recipes });
+
+      })
+      .catch(error => {
+        console.log('deu ruim ', error);
+      })
+
+    })
+    .catch(error => {
+      console.log('/deu ruim ', error);
+    })
+  
+
+  // res.render('my-recipes');
   }
   else {
     res.render('my-recipes');
