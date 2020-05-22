@@ -15,7 +15,7 @@ const recipesAPI = new APIHandler('http://localhost:8000');
 router.get("/", (req, res, next) => {
   const { user } = req.session;
 
-  RandomRecipe.find({}).limit(6)
+  RandomRecipe.find({}).limit(40)
     .then(recipes => {
       res.render("home", { user, user: req.user, recipes });
     })
@@ -444,7 +444,7 @@ router.get('/soups', (req, res) => {
     })
 })
 router.get('/drinks', (req, res) => {
-  RandomRecipe.find({ $text: { $search: "smoothie juice cocktail sangria pompadour martini mojito vodka" } })
+  RandomRecipe.find({ $text: { $search: "smoothie frapuccino juice cocktail sangria pompadour martini mojito vodka" } })
     .then(recipes => {
       res.render('drinks', { recipes })
 
