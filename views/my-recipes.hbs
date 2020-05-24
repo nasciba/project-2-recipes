@@ -1,13 +1,12 @@
-<div class="columns_private align-myrecipes">
-    <h2>MY RECIPES</h2>
-    <div class="align-myrecipes">
-        <form action="/create-recipe" class="align-myrecipes">
-            <button type="submit" id="margin-fck-btn" class="btn__create__recipe">CREATE RECIPE</button>
-        </form>
-    </div>
+<div class="columns-private">
+    <h1 class="cursive-title">My recipes</h1>
+    <form action="/create-recipe" id="align-btn">
+        <button type="submit" class="btn-create-recipe">CREATE RECIPE</button>
+    </form>
+</div>
 
-   
-<div class="recipe__container">
+
+<div class="recipe-container">
     <div class="cards-container">
         {{#each recipes}}
         {{> cardMyRecipes }}

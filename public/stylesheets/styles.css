@@ -25,6 +25,7 @@
     font-family: 'Oswald', sans-serif;
     font-size: 39px;
     letter-spacing: 2px;
+    width: 100px;
 
 }
 .logo a {
@@ -197,6 +198,11 @@ nav {
 
 /* view home.hbs */
 
+#display-home {
+    display: flex;
+    flex-direction: column;
+}
+
 .header {
     background-image: url("https://cdn.pixabay.com/photo/2015/10/02/15/59/olive-oil-968657_1280.jpg");
     background-position:center;
@@ -255,6 +261,9 @@ nav {
     height: 100%;
 }
 
+#background1 {
+    background-image: image();
+}
 .background img {
     width:100%;
     height: 45%;   
@@ -296,16 +305,27 @@ nav {
 }
 
 #image1 {
+    background-image: url("/images/soul-food-thai-hong-kong.jpg");
     opacity: 0.75;
-
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 #image2 {
     opacity: 0.9;
+    background-image: url("/images/cheap.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+
 }
 
-.title-home-categories {
+.cursive-title {
     letter-spacing: 4px;
+    text-align: center;
     font-family: 'Lobster', cursive;
     color: #403933;
 
@@ -525,19 +545,19 @@ nav {
      background-size: cover;
      min-height: 100vh;
      
- }
-
- #text__verify {
-    padding-top:20%;
-    align-self: center;
-    text-align: center;
-    align-items: center;
-    color: #403933;
-    font-family: 'Poppins', sans-serif;
+    }
+    
+    #text__verify {
+        padding-top:20%;
+        align-self: center;
+        text-align: center;
+        align-items: center;
+        color: #403933;
+        font-family: 'Poppins', sans-serif;
     font-size: 30px;
- }
+}
 
- .cards-container {
+.cards-container {
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -546,34 +566,38 @@ nav {
     width: 100%; 
     /* height: auto;  */
   }
-
-.card-img-top {
+  
+  .card-img-top {
     width: 100%;
-    transition: transform .2s;
     border-radius: 2px
 }
 
-.card-img-top:hover {
+/* .card-img-top:hover {
     transform: scale(1.1);
 
-}
+} */
   
- .card{
+ .card {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
     width: 400px; 
-    margin-bottom: 28px;
-    margin-top: 18px;     
-        
+    margin: 35px 30px 20px 30px;  
+    transition: transform .2s;
+      
+ }
+
+ .card:hover {
+    transform: scale(1.1);
  }
 
  .card-body{
     width: 100%; 
     justify-content: center;
-    height:100px;
-    margin:20px;       
+    height: 135px;
+    padding: 20px; 
+    background-color: #FCF8ED;      
     /* border: 1px solid black; */
  }
  .card-body a {
@@ -606,7 +630,7 @@ nav {
  .recipe-container {
      display: flex;
      flex-wrap: wrap;
-     margin:0;
+     margin: 35px 35px 35px 35px;
      margin-top:40px;
      margin-bottom: 70px
      
@@ -647,6 +671,7 @@ nav {
  }
 #ingredients {
     padding: 25px;
+    margin-bottom: 100px;
     font-family: 'Poppins', sans-serif;
     text-align: center;
     line-height: 1.8;
@@ -654,8 +679,8 @@ nav {
     
 }
  #directions {
-     padding:25px;
-     padding-right: 40px;
+    padding:25px;
+    padding-right: 40px;
     font-family: 'Poppins', sans-serif;
     text-align: center;
     line-height: 1.8;
@@ -851,7 +876,9 @@ nav {
 
   #container__private {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: center;
       width: 100vw
   }
 
@@ -859,17 +886,16 @@ nav {
       color: black;
       min-height: 100vh
   }
-  .columns_private {
+  .columns-private {
       width: 100vw;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       flex-wrap: wrap;
-      margin-top: 35px
+      margin-top: 55px
   }
 
-  .columns_private h2 {
-    font-family: 'Poppins', sans-serif;
-    text-align: center; 
-    
-  }
+ 
 
   .title__categories {
       text-align: center;
@@ -908,7 +934,7 @@ nav {
       outline-color: #4EBFC2;
   }
 
-  .btn__create__recipe {
+  .btn-create-recipe {
       background-color: white;
       font-family:'Poppins', sans-serif;
       font-weight: bold;
@@ -1023,7 +1049,12 @@ nav {
     margin-top: 35px
 }
 
-#margin-fck-btn {
-   margin-left:89vh;
-   margin-top:50px;
+#align-btn {
+   display:flex;
+   justify-content: center;
+   margin: 30px;    
+}
+
+.margin-sections {
+    margin-top: 30px
 }
