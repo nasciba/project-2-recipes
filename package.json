@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/nasciba/project-2-recipes#readme",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.2",
     "bcrypt": "^5.0.0",
     "connect-ensure-login": "^0.1.1",
     "connect-flash": "^0.1.1",
